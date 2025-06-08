@@ -3,825 +3,2246 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🍽️ かみのて在庫管理</title>
+    <title>神の手 在庫管理システム</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
+        
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #2C3E50 0%, #34495E 50%, #3A506B 100%);
             min-height: 100vh;
-            color: #333;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
             padding: 20px;
         }
-
-        .header {
-            text-align: center;
-            color: white;
-            margin-bottom: 30px;
+        
+        /* ログイン画面のスタイル */
+        .login-container {
+            max-width: 400px;
+            margin: 50px auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+            animation: fadeIn 0.5s ease-in-out;
         }
-
-        .header h1 {
-            font-size: 2.5rem;
+        
+        .login-header {
+            background: linear-gradient(45deg, #FF6B35, #F7931E);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+        
+        .login-header h1 {
+            font-size: 2.2em;
             margin-bottom: 10px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
-
-        .login-container {
-            background: white;
-            border-radius: 20px;
-            padding: 40px;
-            text-align: center;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-            max-width: 400px;
-            margin: 0 auto;
+        
+        .login-form {
+            padding: 40px 30px;
         }
-
-        .main-container {
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-            display: none;
+        
+        .login-form-group {
+            margin-bottom: 25px;
         }
-
-        .login-title {
-            font-size: 1.8rem;
-            margin-bottom: 30px;
-            color: #333;
-        }
-
-        .input-group {
-            margin-bottom: 20px;
-        }
-
-        .input-group label {
+        
+        .login-form-group label {
             display: block;
             margin-bottom: 8px;
-            font-weight: 600;
-            color: #555;
+            font-weight: bold;
+            color: #495057;
         }
-
-        .input-group input, .input-group select, .input-group textarea {
+        
+        .login-form-group input {
             width: 100%;
             padding: 15px;
-            border: 2px solid #e1e5e9;
-            border-radius: 10px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
             font-size: 16px;
-            transition: border-color 0.3s;
+            transition: border-color 0.3s ease;
         }
-
-        .input-group input:focus, .input-group select:focus, .input-group textarea:focus {
+        
+        .login-form-group input:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: #FF6B35;
+            box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
         }
-
-        .btn {
-            background: linear-gradient(45deg, #667eea, #764ba2);
+        
+        .login-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(45deg, #FF6B35, #F7931E);
             color: white;
             border: none;
-            padding: 15px 30px;
-            border-radius: 10px;
+            border-radius: 8px;
             font-size: 16px;
+            font-weight: bold;
             cursor: pointer;
-            transition: transform 0.2s;
-            width: 100%;
-            margin: 10px 0;
+            transition: all 0.3s ease;
         }
-
-        .btn:hover {
+        
+        .login-btn:hover {
             transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 107, 53, 0.4);
         }
-
-        .btn-secondary {
-            background: linear-gradient(45deg, #2196F3, #21CBF3);
-        }
-
-        .btn-danger {
-            background: linear-gradient(45deg, #f44336, #ff5722);
-        }
-
-        .btn-warning {
-            background: linear-gradient(45deg, #ff9800, #ffc107);
-        }
-
-        .controls {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-        }
-
-        .controls .btn {
-            flex: 1;
-            min-width: 120px;
-        }
-
-        .search-container {
+        
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 12px;
+            border-radius: 6px;
             margin-bottom: 20px;
-        }
-
-        .search-container input {
-            width: 100%;
-            padding: 15px;
-            border: 2px solid #e1e5e9;
-            border-radius: 10px;
-            font-size: 16px;
-        }
-
-        .items-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
-        }
-
-        .item-card {
-            background: #f8f9fa;
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            transition: transform 0.2s;
-        }
-
-        .item-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .item-name {
-            font-size: 1.3rem;
+            text-align: center;
             font-weight: bold;
-            color: #333;
-            margin-bottom: 10px;
-        }
-
-        .item-details {
-            color: #666;
-            margin-bottom: 5px;
-        }
-
-        .expiry-warning {
-            color: #ff5722;
-            font-weight: bold;
-        }
-
-        .expiry-danger {
-            color: #f44336;
-            font-weight: bold;
-            background: #ffebee;
-            padding: 5px 10px;
-            border-radius: 5px;
-        }
-
-        .modal {
             display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.5);
         }
 
-        .modal-content {
-            background-color: white;
-            margin: 5% auto;
+        /* Airtable設定モーダル */
+        .airtable-setup {
+            background: #e8f5e8;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid #28a745;
+        }
+
+        .setup-form-group {
+            margin-bottom: 15px;
+        }
+
+        .setup-form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #155724;
+        }
+
+        .setup-form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #c3e6cb;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .setup-form-group input:focus {
+            outline: none;
+            border-color: #28a745;
+        }
+
+        .connection-status {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .status-connected {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-disconnected {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+        
+        .shake {
+            animation: shake 0.5s ease-in-out;
+        }
+        
+        /* フローティングボタンのスタイル */
+        .floating-buttons {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .floating-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .floating-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+        }
+        
+        .floating-btn.add-btn {
+            background: linear-gradient(45deg, #FF6B35, #F7931E);
+        }
+        
+        .floating-btn.ingredient-btn {
+            background: linear-gradient(45deg, #6f42c1, #8b5cf6);
+        }
+        
+        .floating-btn-tooltip {
+            position: absolute;
+            right: 70px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .floating-btn:hover .floating-btn-tooltip {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* メイン画面のスタイル（既存のものをそのまま使用） */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(45deg, #FF6B35, #F7931E);
+            color: white;
             padding: 30px;
-            border-radius: 20px;
-            width: 90%;
-            max-width: 500px;
+            text-align: center;
             position: relative;
         }
-
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .logout-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        .logout-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 30px;
+            background: #f8f9fa;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #FF6B35;
+        }
+        
+        .controls {
+            padding: 30px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
+            background: #fff;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
             font-weight: bold;
             cursor: pointer;
-            position: absolute;
-            right: 20px;
-            top: 15px;
+            transition: all 0.3s ease;
+            font-size: 14px;
         }
-
-        .close:hover {
-            color: black;
+        
+        .btn-primary {
+            background: linear-gradient(45deg, #FF6B35, #F7931E);
+            color: white;
         }
-
-        .error-message {
-            background: #ffebee;
-            color: #c62828;
-            padding: 15px;
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 53, 0.4);
+        }
+        
+        .btn-success {
+            background: linear-gradient(45deg, #4ECDC4, #44A08D);
+            color: white;
+        }
+        
+        .btn-danger {
+            background: linear-gradient(45deg, #FF6B6B, #ee5a52);
+            color: white;
+        }
+        
+        .search-box {
+            flex: 1;
+            min-width: 250px;
+            padding: 12px 20px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+        
+        .search-box:focus {
+            outline: none;
+            border-color: #FF6B35;
+        }
+        
+        .table-container {
+            padding: 30px;
+            overflow-x: auto;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
             border-radius: 10px;
-            margin: 15px 0;
-            border-left: 4px solid #f44336;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
         }
-
-        .success-message {
-            background: #e8f5e8;
-            color: #2e7d32;
-            padding: 15px;
-            border-radius: 10px;
-            margin: 15px 0;
-            border-left: 4px solid #4caf50;
+        
+        th {
+            background: linear-gradient(45deg, #2C3E50, #34495E);
+            color: white;
+            padding: 15px 12px;
+            text-align: left;
+            font-weight: bold;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        td {
+            padding: 15px 12px;
+            border-bottom: 1px solid #f1f3f4;
+            transition: background-color 0.3s ease;
+        }
+        
+        tr:hover td {
+            background-color: #fafafa;
+        }
+        
+        .expired {
+            color: #dc3545 !important;
+            font-weight: bold;
+            background-color: #fff5f5 !important;
+        }
+        
+        .warning {
+            color: #fd7e14 !important;
+            font-weight: bold;
+        }
+        
+        .countdown {
+            color: #dc3545 !important;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        
+        .status-refrigerated {
+            background: #E8F5E8;
+            color: #2E7D32;
+        }
+        
+        .status-room {
+            background: #FFF3E0;
+            color: #F57C00;
+        }
+        
+        .add-form {
+            background: #f8f9fa;
+            padding: 30px;
+            border-top: 1px solid #eee;
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-group label {
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #495057;
+        }
+        
+        .form-group input,
+        .form-group select {
+            padding: 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #FF6B35;
+        }
+        
+        .auto-field {
+            background-color: #f8f9fa !important;
+            color: #495057;
+        }
+        
+        .form-group input:required:invalid,
+        .form-group select:required:invalid {
+            border-color: #dc3545;
+        }
+        
+        .form-group input:required:valid,
+        .form-group select:required:valid {
+            border-color: #28a745;
+        }
+        
+        .action-btn {
+            font-size: 12px;
+            padding: 6px 12px;
+            margin: 0 2px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            color: white;
+        }
+        
+        .edit-btn {
+            background: #34495E;
+        }
+        
+        .delete-btn {
+            background: #E74C3C;
+        }
+        
+        .hidden {
+            display: none !important;
         }
 
         .loading {
-            text-align: center;
-            padding: 20px;
+            display: inline-block;
+            margin-left: 10px;
+            font-size: 12px;
             color: #666;
         }
 
+        .loading::after {
+            content: '';
+            animation: dots 1.5s infinite;
+        }
+
+        @keyframes dots {
+            0%, 20% { content: ''; }
+            40% { content: '.'; }
+            60% { content: '..'; }
+            80%, 100% { content: '...'; }
+        }
+
+        /* 食材マスター管理モーダル */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 800px;
+            width: 95%;
+            max-height: 90%;
+            overflow-y: auto;
+        }
+
+        .ingredient-list {
+            max-height: 400px;
+            overflow-y: auto;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 15px;
+            background: #f8f9fa;
+        }
+
+        .ingredient-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: white;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            border-left: 4px solid #FF6B35;
+        }
+
+        .ingredient-info {
+            flex: 1;
+        }
+
+        .ingredient-actions {
+            display: flex;
+            gap: 5px;
+        }
+
+        .category-section {
+            margin-bottom: 25px;
+        }
+
+        .category-title {
+            background: linear-gradient(45deg, #FF6B35, #F7931E);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .ingredient-form {
+            background: #e8f5e8;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid #28a745;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr auto;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .form-row input, .form-row select {
+            padding: 10px;
+            border: 2px solid #c3e6cb;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .form-row input:focus, .form-row select:focus {
+            outline: none;
+            border-color: #28a745;
+        }
+        
         @media (max-width: 768px) {
-            .container {
-                padding: 10px;
+            .header h1 {
+                font-size: 1.8em;
             }
             
-            .header h1 {
-                font-size: 2rem;
+            .logout-btn {
+                position: static;
+                margin-top: 15px;
+                display: block;
+                width: fit-content;
+                margin-left: auto;
+                margin-right: auto;
             }
             
             .controls {
                 flex-direction: column;
+                align-items: stretch;
             }
             
-            .items-grid {
-                grid-template-columns: 1fr;
+            .search-box {
+                min-width: auto;
             }
-        }
+            
+            table {
+                font-size: 14px;
+            }
+            
+            th, td {
+                padding: 10px 8px;
+            }
 
-        .item-actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
-        }
-
-        .item-actions .btn {
-            flex: 1;
-            padding: 8px 12px;
-            font-size: 14px;
-            margin: 0;
-        }
-
-        .stats-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .stat-card {
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            color: white;
-            padding: 20px;
-            border-radius: 15px;
-            text-align: center;
-        }
-
-        .stat-number {
-            font-size: 2rem;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        .stat-label {
-            font-size: 0.9rem;
-            opacity: 0.9;
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+            
+            .floating-buttons {
+                bottom: 15px;
+                right: 15px;
+            }
+            
+            .floating-btn {
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+            }
+            
+            .floating-btn-tooltip {
+                right: 60px;
+                font-size: 11px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
+    <!-- ログイン画面 -->
+    <div id="loginScreen" class="login-container">
+        <div class="login-header">
+            <h1>🔥 神の手</h1>
+            <p>在庫管理システム</p>
+        </div>
+        <div class="login-form">
+            <div class="error-message" id="errorMessage">
+                パスワードが正しくありません
+            </div>
+
+            <form onsubmit="handleLogin(event)">
+                <div class="login-form-group">
+                    <label for="password">パスワード</label>
+                    <input type="password" id="password" placeholder="パスワードを入力してください" required>
+                </div>
+                <button type="submit" class="login-btn">ログイン</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- メイン画面 -->
+    <div id="mainScreen" class="container hidden">
         <div class="header">
-            <h1>🍽️ かみのて在庫管理</h1>
-            <p>最先端のモデルをサポートし、リポジトリの内容を迅速に理解するのに役立ちます</p>
+            <button class="logout-btn" onclick="logout()">ログアウト</button>
+            <h1>🔥 神の手 在庫管理システム</h1>
+            <p>廃棄ロス削減・効率的な在庫管理で利益アップ！</p>
+            <div style="margin-top: 10px;">
+                <span id="mainConnectionStatus" class="connection-status status-disconnected">Airtable: 未接続</span>
+            </div>
         </div>
-
-        <!-- ログイン画面 -->
-        <div id="loginContainer" class="login-container">
-            <h2 class="login-title">🔐 ログイン</h2>
-            <div class="input-group">
-                <label for="password">パスワード</label>
-                <input type="password" id="password" placeholder="パスワードを入力してください">
+        
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-number" id="totalItems">0</div>
+                <div>総在庫数</div>
             </div>
-            <button class="btn" onclick="login()">ログイン</button>
-            <div id="loginError" class="error-message" style="display: none;"></div>
+            <div class="stat-card">
+                <div class="stat-number" id="expiredItems">0</div>
+                <div>期限切れ</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="urgentItems">0</div>
+                <div>24時間以内</div>
+            </div>
+            <div class="stat-card" style="background: linear-gradient(45deg, #28a745, #20c997); color: white; cursor: pointer;" onclick="showScheduleModal()">
+                <div style="font-size: 1.5em;">📅</div>
+                <div>仕込みスケジュール</div>
+            </div>
         </div>
-
-        <!-- メイン画面 -->
-        <div id="mainContainer" class="main-container">
-            <!-- 統計情報 -->
-            <div class="stats-container">
-                <div class="stat-card">
-                    <div class="stat-number" id="totalItems">0</div>
-                    <div class="stat-label">総アイテム数</div>
+        
+        <div class="controls">
+            <input type="text" class="search-box" id="searchBox" placeholder="🔍 食材名で検索...">
+            <select id="sortOptions" onchange="renderTable()" style="padding: 12px; border: 2px solid #e9ecef; border-radius: 8px; font-size: 14px;">
+                <option value="default">並び順を選択</option>
+                <option value="prepDate">入荷、仕込み日順</option>
+                <option value="expiryDate">期限が短い順</option>
+            </select>
+            <button class="btn btn-danger" onclick="clearExpired()">🗑️ 期限切れ削除</button>
+            <button class="btn btn-success" onclick="exportToCSV()">📥 CSV出力</button>
+            <button class="btn" onclick="showRestoreModal()" style="background: #6f42c1; color: white;">♻️ データ復元</button>
+        </div>
+        
+        <div class="table-container">
+            <table id="inventoryTable">
+                <thead>
+                    <tr>
+                        <th>食材名</th>
+                        <th>数量</th>
+                        <th>入荷、仕込み日時</th>
+                        <th>賞味期限</th>
+                        <th>保存方法</th>
+                        <th>保存場所</th>
+                        <th>担当者</th>
+                        <th>備考</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody id="inventoryBody">
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="add-form" id="addForm" style="display: none;">
+            <h3>🆕 新しい食材を追加</h3>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>食材名 <span style="color: #dc3545; font-weight: bold;">*</span></label>
+                    <select id="itemName" onchange="calculateExpiry()" required>
+                        <option value="">選択してください</option>
+                    </select>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="expiringItems">0</div>
-                    <div class="stat-label">期限切れ間近</div>
+                <div class="form-group">
+                    <label>数量 <span style="color: #dc3545; font-weight: bold;">*</span></label>
+                    <input type="text" id="quantity" placeholder="例：1000g または 5個" required>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="lowStockItems">0</div>
-                    <div class="stat-label">在庫少</div>
+                <div class="form-group">
+                    <label>入荷、仕込み日時</label>
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <input type="datetime-local" id="prepDate" onchange="calculateExpiry()">
+                        <button type="button" class="btn btn-primary" onclick="setCurrentTime()" style="white-space: nowrap; font-size: 12px; padding: 8px 16px;">現在の時刻</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>賞味期限</label>
+                    <input type="datetime-local" id="expiryDate" class="auto-field">
+                </div>
+                <div class="form-group">
+                    <label>保存方法</label>
+                    <select id="storageType">
+                        <option value="冷蔵">冷蔵</option>
+                        <option value="常温">常温</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>保存場所</label>
+                    <select id="location">
+                        <option value="冷蔵庫1">冷蔵庫1</option>
+                        <option value="冷蔵庫2">冷蔵庫2</option>
+                        <option value="冷蔵庫3">冷蔵庫3</option>
+                        <option value="冷蔵庫4">冷蔵庫4</option>
+                        <option value="冷蔵庫5(ホール)">冷蔵庫5(ホール)</option>
+                        <option value="冷蔵庫（倉庫）">冷蔵庫（倉庫）</option>
+                        <option value="常温保管">常温保管</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>担当者 <span style="color: #dc3545; font-weight: bold;">*</span></label>
+                    <select id="staff" required>
+                        <option value="">選択してください</option>
+                        <option value="後藤">後藤</option>
+                        <option value="火山">火山</option>
+                        <option value="原">原</option>
+                        <option value="押尾">押尾</option>
+                        <option value="綾樹">綾樹</option>
+                        <option value="雅弥">雅弥</option>
+                        <option value="さくら">さくら</option>
+                        <option value="綾奈">綾奈</option>
+                        <option value="晴喜">晴喜</option>
+                        <option value="樹">樹</option>
+                        <option value="美海">美海</option>
+                        <option value="はるか">はるか</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>備考</label>
+                    <input type="text" id="notes" placeholder="例：要注意、解凍済みなど">
                 </div>
             </div>
+            <button class="btn btn-success" id="submitBtn" onclick="addItem()">✅ 追加</button>
+            <button class="btn" onclick="hideAddForm()" style="background: #6c757d; color: white; margin-left: 10px;">❌ キャンセル</button>
+        </div>
+    </div>
 
-            <!-- 操作ボタン -->
-            <div class="controls">
-                <button class="btn" onclick="showAddModal()">📝 食材追加</button>
-                <button class="btn btn-secondary" onclick="refreshData()">🔄 更新</button>
-                <button class="btn btn-warning" onclick="showExpiringItems()">⚠️ 期限切れ確認</button>
-                <button class="btn btn-danger" onclick="logout()">🚪 ログアウト</button>
-            </div>
+    <!-- フローティングボタン -->
+    <div class="floating-buttons" id="floatingButtons" style="display: none;">
+        <button class="floating-btn add-btn" onclick="showAddForm()" title="新規追加">
+            <span class="floating-btn-tooltip">新規追加</span>
+            ➕
+        </button>
+        <button class="floating-btn ingredient-btn" onclick="showIngredientMasterModal()" title="食材管理">
+            <span class="floating-btn-tooltip">食材管理</span>
+            🥬
+        </button>
+    </div>
 
-            <!-- 検索バー -->
-            <div class="search-container">
-                <input type="text" id="searchInput" placeholder="🔍 食材を検索..." oninput="filterItems()">
+    <!-- 食材マスター管理モーダル -->
+    <div id="ingredientMasterModal" class="modal">
+        <div class="modal-content">
+            <h2 style="color: #6f42c1; margin-bottom: 20px;">🥬 食材マスター管理</h2>
+            
+            <!-- 新規追加フォーム -->
+            <div class="ingredient-form">
+                <h3 style="color: #155724; margin-bottom: 15px;">新しい食材を追加</h3>
+                <div class="form-row">
+                    <input type="text" id="newIngredientName" placeholder="食材名を入力">
+                    <select id="newIngredientCategory">
+                        <option value="食材">食材</option>
+                        <option value="仕込み">仕込み</option>
+                    </select>
+                    <button onclick="addOrUpdateIngredient()" id="ingredientBtn" style="padding: 10px 15px; background: #28a745; color: white; border: none; border-radius: 6px; cursor: pointer;">追加</button>
+                </div>
+                <div class="form-row">
+                    <input type="number" id="newIngredientHours" placeholder="消費期限(時間)" min="1" max="720">
+                    <span style="padding: 10px; color: #666; font-size: 14px;">時間後に期限切れ</span>
+                    <button onclick="cancelIngredientEdit()" id="cancelIngredientEditBtn" style="display: none; padding: 10px 15px; background: #6c757d; color: white; border: none; border-radius: 6px; cursor: pointer;">キャンセル</button>
+                </div>
             </div>
 
             <!-- 食材一覧 -->
-            <div id="itemsContainer" class="loading">
-                Airtableに接続中...
+            <div class="category-section">
+                <div class="category-title">🥬 食材</div>
+                <div id="ingredientsList" class="ingredient-list"></div>
             </div>
-        </div>
 
-        <!-- 食材追加モーダル -->
-        <div id="addModal" class="modal">
-            <div class="modal-content">
-                <span class="close" onclick="closeAddModal()">&times;</span>
-                <h2>📝 新しい食材を追加</h2>
-                <form id="addForm">
-                    <div class="input-group">
-                        <label for="itemName">食材名</label>
-                        <input type="text" id="itemName" required>
-                    </div>
-                    <div class="input-group">
-                        <label for="quantity">数量</label>
-                        <input type="number" id="quantity" required>
-                    </div>
-                    <div class="input-group">
-                        <label for="prepDate">入荷日</label>
-                        <input type="date" id="prepDate" required>
-                    </div>
-                    <div class="input-group">
-                        <label for="expirationDate">期限日</label>
-                        <input type="date" id="expirationDate" required>
-                    </div>
-                    <div class="input-group">
-                        <label for="storageType">保存方法</label>
-                        <select id="storageType" required>
-                            <option value="">選択してください</option>
-                            <option value="冷蔵">冷蔵</option>
-                            <option value="冷凍">冷凍</option>
-                            <option value="常温">常温</option>
-                            <option value="乾燥">乾燥</option>
-                        </select>
-                    </div>
-                    <div class="input-group">
-                        <label for="storageLocation">保存場所</label>
-                        <input type="text" id="storageLocation" required>
-                    </div>
-                    <div class="input-group">
-                        <label for="staff">担当者</label>
-                        <input type="text" id="staff" required>
-                    </div>
-                    <div class="input-group">
-                        <label for="notes">備考</label>
-                        <textarea id="notes" rows="3"></textarea>
-                    </div>
-                    <button type="submit" class="btn">追加</button>
-                </form>
-                <div id="addMessage"></div>
+            <div class="category-section">
+                <div class="category-title">🍳 仕込み</div>
+                <div id="preparedList" class="ingredient-list"></div>
             </div>
-        </div>
 
-        <!-- 編集モーダル -->
-        <div id="editModal" class="modal">
-            <div class="modal-content">
-                <span class="close" onclick="closeEditModal()">&times;</span>
-                <h2>📝 食材を編集</h2>
-                <form id="editForm">
-                    <div class="input-group">
-                        <label for="editItemName">食材名</label>
-                        <input type="text" id="editItemName" required>
-                    </div>
-                    <div class="input-group">
-                        <label for="editQuantity">数量</label>
-                        <input type="number" id="editQuantity" required>
-                    </div>
-                    <div class="input-group">
-                        <label for="editPrepDate">入荷日</label>
-                        <input type="date" id="editPrepDate" required>
-                    </div>
-                    <div class="input-group">
-                        <label for="editExpirationDate">期限日</label>
-                        <input type="date" id="editExpirationDate" required>
-                    </div>
-                    <div class="input-group">
-                        <label for="editStorageType">保存方法</label>
-                        <select id="editStorageType" required>
-                            <option value="">選択してください</option>
-                            <option value="冷蔵">冷蔵</option>
-                            <option value="冷凍">冷凍</option>
-                            <option value="常温">常温</option>
-                            <option value="乾燥">乾燥</option>
-                        </select>
-                    </div>
-                    <div class="input-group">
-                        <label for="editStorageLocation">保存場所</label>
-                        <input type="text" id="editStorageLocation" required>
-                    </div>
-                    <div class="input-group">
-                        <label for="editStaff">担当者</label>
-                        <input type="text" id="editStaff" required>
-                    </div>
-                    <div class="input-group">
-                        <label for="editNotes">備考</label>
-                        <textarea id="editNotes" rows="3"></textarea>
-                    </div>
-                    <button type="submit" class="btn">更新</button>
-                </form>
-                <div id="editMessage"></div>
+            <div style="text-align: center; margin-top: 20px;">
+                <button class="btn" onclick="showDeletedIngredients()" style="background: #17a2b8; color: white; margin-right: 10px;">♻️ 削除済み食材を復元</button>
+                <button class="btn btn-primary" onclick="closeIngredientMasterModal()">閉じる</button>
             </div>
         </div>
     </div>
 
-    <script>
-        // Airtable設定
-        const AIRTABLE_API_KEY = 'patzM45lXVEkneRaZ.f3582a02b1b9ba6e4c9b0e6b1eb96dc06bbc43230f75eea89332087966b69339';
-        const AIRTABLE_BASE_ID = 'appzhhT8Kt4LzgIJS';
-        const AIRTABLE_TABLE_NAME = 'Inventory Items';
-        
-        // 認証設定
-        const CORRECT_PASSWORD = 'haramika';
-        
-        // グローバル変数
-        let allItems = [];
-        let filteredItems = [];
-        let currentEditId = null;
-
-        // ログイン機能
-        function login() {
-            const password = document.getElementById('password').value;
-            const errorDiv = document.getElementById('loginError');
+    <!-- 仕込みスケジュールモーダル -->
+    <div id="scheduleModal" class="modal">
+        <div class="modal-content">
+            <h2 style="color: #28a745; margin-bottom: 20px;">📅 仕込みスケジュール管理</h2>
             
-            if (password === CORRECT_PASSWORD) {
-                document.getElementById('loginContainer').style.display = 'none';
-                document.getElementById('mainContainer').style.display = 'block';
-                loadData();
+            <!-- 商品マスター管理 -->
+            <div style="background: #f8f9fa; border-radius: 10px; padding: 20px; margin-bottom: 20px;">
+                <h3 style="color: #495057; margin-bottom: 15px;">🛠️ 商品マスター設定</h3>
+                <div style="display: grid; grid-template-columns: 2fr 1fr 1fr auto; gap: 10px; align-items: center; margin-bottom: 10px;">
+                    <input type="text" id="newProductName" placeholder="商品名を入力" style="padding: 10px; border: 2px solid #e9ecef; border-radius: 6px;">
+                    <input type="number" id="newProductHours" placeholder="消費期限(h)" min="1" max="168" style="padding: 10px; border: 2px solid #e9ecef; border-radius: 6px;">
+                    <input type="number" id="newProductServings" placeholder="人数" min="1" max="100" style="padding: 10px; border: 2px solid #e9ecef; border-radius: 6px;">
+                    <button onclick="addOrUpdateProductMaster()" id="productMasterBtn" style="padding: 10px 15px; background: #28a745; color: white; border: none; border-radius: 6px; cursor: pointer;">追加</button>
+                </div>
+                <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                    <button onclick="cancelProductEdit()" id="cancelEditBtn" style="display: none; padding: 8px 12px; background: #6c757d; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px;">キャンセル</button>
+                    <button onclick="showDeletedProducts()" style="padding: 8px 12px; background: #17a2b8; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px;">♻️ 削除済み復元</button>
+                </div>
+                <div id="productMasterList" style="max-height: 200px; overflow-y: auto;"></div>
+            </div>
+
+            <!-- 現在の仕込みスケジュール -->
+            <div style="background: #fff3cd; border-radius: 10px; padding: 20px; margin-bottom: 20px;">
+                <h3 style="color: #856404; margin-bottom: 15px;">⏰ そろそろ仕込むリスト</h3>
+                <div id="upcomingSchedule"></div>
+            </div>
+
+            <!-- 全体スケジュール -->
+            <div style="background: #e7f3ff; border-radius: 10px; padding: 20px;">
+                <h3 style="color: #004085; margin-bottom: 15px;">📋 仕込み予定一覧</h3>
+                <div id="fullSchedule"></div>
+            </div>
+
+            <button class="btn btn-primary" onclick="closeScheduleModal()" style="margin-top: 20px;">閉じる</button>
+        </div>
+    </div>
+
+    <!-- 削除データ復元モーダル -->
+    <div id="restoreModal" class="modal">
+        <div class="modal-content">
+            <h2 style="color: #6f42c1; margin-bottom: 20px;">♻️ 削除されたデータの復元</h2>
+            <p style="color: #666; margin-bottom: 20px;">過去3日間に削除されたデータから復元できます</p>
+            <div id="restoreContent"></div>
+            <button class="btn btn-primary" onclick="closeRestoreModal()" style="margin-top: 20px;">閉じる</button>
+        </div>
+    </div>
+
+    <script>
+        // パスワード認証
+        const CORRECT_PASSWORD = 'haramika';
+        let isLoggedIn = false;
+
+        // Airtable設定（固定値）
+        let airtableConfig = {
+            token: 'patbzLEuOv9n7guB5.454219cc8616f9981adc42727fcafeb91b427678b5fedcad39dfdc4a73b37b13',
+            baseId: 'appvW36w7SahmzXAn',
+            tableName: 'Inventory',
+            isConnected: true
+        };
+
+        function updateConnectionStatus(connected) {
+            const mainStatus = document.getElementById('mainConnectionStatus');
+            
+            if (connected) {
+                if (mainStatus) {
+                    mainStatus.className = 'connection-status status-connected';
+                    mainStatus.textContent = 'Airtable: 接続済み';
+                }
             } else {
-                errorDiv.style.display = 'block';
-                errorDiv.textContent = 'パスワードが正しくありません';
+                if (mainStatus) {
+                    mainStatus.className = 'connection-status status-disconnected';
+                    mainStatus.textContent = 'Airtable: 未接続';
+                }
             }
         }
 
-        // ログアウト機能
-        function logout() {
-            document.getElementById('loginContainer').style.display = 'block';
-            document.getElementById('mainContainer').style.display = 'none';
-            document.getElementById('password').value = '';
-            document.getElementById('loginError').style.display = 'none';
-        }
-
-        // Enterキーでログイン
-        document.getElementById('password').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                login();
+        async function saveToAirtable(item, recordId = null) {
+            if (!airtableConfig.isConnected) {
+                console.log('Airtable未接続のためローカル保存のみ');
+                return;
             }
-        });
 
-        // Airtableからデータを取得
-        async function loadData() {
             try {
-                document.getElementById('itemsContainer').innerHTML = '<div class="loading">データを読み込み中...</div>';
-                
-                // CORS回避のためプロキシを使用
-                const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-                const targetUrl = `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${AIRTABLE_TABLE_NAME}`;
-                
-                const response = await fetch(proxyUrl + targetUrl, {
+                const data = {
+                    fields: {
+                        name: item.name,
+                        quantity: item.quantity,
+                        prepDate: item.prepDate,
+                        expiryDate: item.expiryDate,
+                        storageType: item.storageType,
+                        location: item.location,
+                        staff: item.staff,
+                        notes: item.notes
+                    }
+                };
+
+                let url = `https://api.airtable.com/v0/${airtableConfig.baseId}/${encodeURIComponent(airtableConfig.tableName)}`;
+                let method = 'POST';
+
+                if (recordId) {
+                    url += `/${recordId}`;
+                    method = 'PATCH';
+                }
+
+                const response = await fetch(url, {
+                    method: method,
                     headers: {
-                        'Authorization': `Bearer ${AIRTABLE_API_KEY}`,
-                        'X-Requested-With': 'XMLHttpRequest'
+                        'Authorization': `Bearer ${airtableConfig.token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (!response.ok) {
+                    console.error(`Airtable API error: HTTP ${response.status}`);
+                    return null;
+                }
+
+                const result = await response.json();
+                return result.id;
+            } catch (error) {
+                console.error('Airtable保存エラー:', error);
+                return null;
+            }
+        }
+
+        async function deleteFromAirtable(recordId) {
+            if (!airtableConfig.isConnected || !recordId) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`https://api.airtable.com/v0/${airtableConfig.baseId}/${encodeURIComponent(airtableConfig.tableName)}/${recordId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${airtableConfig.token}`
                     }
                 });
 
                 if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
                 }
-
-                const data = await response.json();
-                allItems = data.records;
-                filteredItems = allItems;
-                displayItems(filteredItems);
-                updateStats();
             } catch (error) {
-                console.error('Error loading data:', error);
-                document.getElementById('itemsContainer').innerHTML = 
-                    '<div class="error-message">Airtableへの接続に失敗しました。<br>プロキシサーバーへのアクセスが必要です。<br><a href="https://cors-anywhere.herokuapp.com/corsdemo" target="_blank" style="color: #667eea;">こちらをクリック</a>してプロキシを有効化してください。</div>';
+                console.error('Airtable削除エラー:', error);
             }
         }
 
-        // アイテムを表示
-        function displayItems(items) {
-            const container = document.getElementById('itemsContainer');
-            
-            if (items.length === 0) {
-                container.innerHTML = '<div class="loading">アイテムが見つかりません</div>';
+        async function syncFromAirtable() {
+            if (!airtableConfig.isConnected) {
+                alert('Airtableに接続していません');
                 return;
             }
 
-            const html = items.map(item => {
-                const fields = item.fields;
-                const expirationDate = new Date(fields['Expiration Date']);
-                const today = new Date();
-                const daysUntilExpiry = Math.ceil((expirationDate - today) / (1000 * 60 * 60 * 24));
-                
-                let expiryClass = '';
-                let expiryText = '';
-                
-                if (daysUntilExpiry < 0) {
-                    expiryClass = 'expiry-danger';
-                    expiryText = `期限切れ（${Math.abs(daysUntilExpiry)}日前）`;
-                } else if (daysUntilExpiry <= 3) {
-                    expiryClass = 'expiry-danger';
-                    expiryText = `${daysUntilExpiry}日後に期限切れ`;
-                } else if (daysUntilExpiry <= 7) {
-                    expiryClass = 'expiry-warning';
-                    expiryText = `${daysUntilExpiry}日後に期限切れ`;
-                } else {
-                    expiryText = `${daysUntilExpiry}日後に期限切れ`;
-                }
-
-                return `
-                    <div class="item-card">
-                        <div class="item-name">${fields['Item Name'] || 'N/A'}</div>
-                        <div class="item-details">数量: ${fields['Quantity'] || 'N/A'}</div>
-                        <div class="item-details">入荷日: ${fields['Prep Date'] || 'N/A'}</div>
-                        <div class="item-details ${expiryClass}">期限: ${fields['Expiration Date'] || 'N/A'} (${expiryText})</div>
-                        <div class="item-details">保存方法: ${fields['Storage Type'] || 'N/A'}</div>
-                        <div class="item-details">保存場所: ${fields['Storage Location'] || 'N/A'}</div>
-                        <div class="item-details">担当者: ${fields['Staff'] || 'N/A'}</div>
-                        <div class="item-details">備考: ${fields['Notes'] || 'なし'}</div>
-                        <div class="item-actions">
-                            <button class="btn btn-secondary" onclick="editItem('${item.id}')">編集</button>
-                            <button class="btn btn-danger" onclick="deleteItem('${item.id}')">削除</button>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-
-            container.innerHTML = html;
-        }
-
-        // 統計情報を更新
-        function updateStats() {
-            const total = allItems.length;
-            let expiring = 0;
-            let lowStock = 0;
-            const today = new Date();
-
-            allItems.forEach(item => {
-                const fields = item.fields;
-                const expirationDate = new Date(fields['Expiration Date']);
-                const daysUntilExpiry = Math.ceil((expirationDate - today) / (1000 * 60 * 60 * 24));
-                
-                if (daysUntilExpiry <= 7) {
-                    expiring++;
-                }
-                
-                if (fields['Quantity'] <= 10) {
-                    lowStock++;
-                }
-            });
-
-            document.getElementById('totalItems').textContent = total;
-            document.getElementById('expiringItems').textContent = expiring;
-            document.getElementById('lowStockItems').textContent = lowStock;
-        }
-
-        // 検索・フィルター機能
-        function filterItems() {
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            filteredItems = allItems.filter(item => {
-                const fields = item.fields;
-                return (fields['Item Name'] || '').toLowerCase().includes(searchTerm) ||
-                       (fields['Storage Location'] || '').toLowerCase().includes(searchTerm) ||
-                       (fields['Staff'] || '').toLowerCase().includes(searchTerm);
-            });
-            displayItems(filteredItems);
-        }
-
-        // 期限切れアイテムを表示
-        function showExpiringItems() {
-            const today = new Date();
-            filteredItems = allItems.filter(item => {
-                const expirationDate = new Date(item.fields['Expiration Date']);
-                const daysUntilExpiry = Math.ceil((expirationDate - today) / (1000 * 60 * 60 * 24));
-                return daysUntilExpiry <= 7;
-            });
-            displayItems(filteredItems);
-            document.getElementById('searchInput').value = '';
-        }
-
-        // データ更新
-        function refreshData() {
-            loadData();
-            document.getElementById('searchInput').value = '';
-        }
-
-        // モーダル関連
-        function showAddModal() {
-            document.getElementById('addModal').style.display = 'block';
-            // 今日の日付をデフォルトに設定
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('prepDate').value = today;
-        }
-
-        function closeAddModal() {
-            document.getElementById('addModal').style.display = 'none';
-            document.getElementById('addForm').reset();
-            document.getElementById('addMessage').innerHTML = '';
-        }
-
-        function closeEditModal() {
-            document.getElementById('editModal').style.display = 'none';
-            document.getElementById('editForm').reset();
-            document.getElementById('editMessage').innerHTML = '';
-            currentEditId = null;
-        }
-
-        // アイテム追加
-        document.getElementById('addForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const formData = {
-                'Item Name': document.getElementById('itemName').value,
-                'Quantity': parseInt(document.getElementById('quantity').value),
-                'Prep Date': document.getElementById('prepDate').value,
-                'Expiration Date': document.getElementById('expirationDate').value,
-                'Storage Type': document.getElementById('storageType').value,
-                'Storage Location': document.getElementById('storageLocation').value,
-                'Staff': document.getElementById('staff').value,
-                'Notes': document.getElementById('notes').value
-            };
-
-            try {
-                const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-                const targetUrl = `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${AIRTABLE_TABLE_NAME}`;
-                
-                const response = await fetch(proxyUrl + targetUrl, {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${AIRTABLE_API_KEY}`,
-                        'Content-Type': 'application/json',
-                        'X-Requested-With': 'XMLHttpRequest'
-                    },
-                    body: JSON.stringify({
-                        fields: formData
-                    })
-                });
-
-                if (response.ok) {
-                    document.getElementById('addMessage').innerHTML = 
-                        '<div class="success-message">食材が正常に追加されました！</div>';
-                    setTimeout(() => {
-                        closeAddModal();
-                        loadData();
-                    }, 1500);
-                } else {
-                    throw new Error('Failed to add item');
-                }
-            } catch (error) {
-                console.error('Error adding item:', error);
-                document.getElementById('addMessage').innerHTML = 
-                    '<div class="error-message">食材の追加に失敗しました</div>';
+            if (!confirm('Airtableのデータでローカルデータを上書きしますか？\n※ローカルの変更が失われる可能性があります')) {
+                return;
             }
-        });
-
-        // アイテム編集
-        function editItem(id) {
-            const item = allItems.find(item => item.id === id);
-            if (!item) return;
-
-            currentEditId = id;
-            const fields = item.fields;
-
-            document.getElementById('editItemName').value = fields['Item Name'] || '';
-            document.getElementById('editQuantity').value = fields['Quantity'] || '';
-            document.getElementById('editPrepDate').value = fields['Prep Date'] || '';
-            document.getElementById('editExpirationDate').value = fields['Expiration Date'] || '';
-            document.getElementById('editStorageType').value = fields['Storage Type'] || '';
-            document.getElementById('editStorageLocation').value = fields['Storage Location'] || '';
-            document.getElementById('editStaff').value = fields['Staff'] || '';
-            document.getElementById('editNotes').value = fields['Notes'] || '';
-
-            document.getElementById('editModal').style.display = 'block';
-        }
-
-        // アイテム更新
-        document.getElementById('editForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            if (!currentEditId) return;
-
-            const formData = {
-                'Item Name': document.getElementById('editItemName').value,
-                'Quantity': parseInt(document.getElementById('editQuantity').value),
-                'Prep Date': document.getElementById('editPrepDate').value,
-                'Expiration Date': document.getElementById('editExpirationDate').value,
-                'Storage Type': document.getElementById('editStorageType').value,
-                'Storage Location': document.getElementById('editStorageLocation').value,
-                'Staff': document.getElementById('editStaff').value,
-                'Notes': document.getElementById('editNotes').value
-            };
 
             try {
-                const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-                const targetUrl = `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${AIRTABLE_TABLE_NAME}/${currentEditId}`;
-                
-                const response = await fetch(proxyUrl + targetUrl, {
-                    method: 'PATCH',
+                const loadingSpan = document.createElement('span');
+                loadingSpan.className = 'loading';
+                loadingSpan.textContent = '同期中';
+                document.querySelector('.controls').appendChild(loadingSpan);
+
+                const response = await fetch(`https://api.airtable.com/v0/${airtableConfig.baseId}/${encodeURIComponent(airtableConfig.tableName)}`, {
                     headers: {
-                        'Authorization': `Bearer ${AIRTABLE_API_KEY}`,
-                        'Content-Type': 'application/json',
-                        'X-Requested-With': 'XMLHttpRequest'
-                    },
-                    body: JSON.stringify({
-                        fields: formData
-                    })
-                });
-
-                if (response.ok) {
-                    document.getElementById('editMessage').innerHTML = 
-                        '<div class="success-message">食材が正常に更新されました！</div>';
-                    setTimeout(() => {
-                        closeEditModal();
-                        loadData();
-                    }, 1500);
-                } else {
-                    throw new Error('Failed to update item');
-                }
-            } catch (error) {
-                console.error('Error updating item:', error);
-                document.getElementById('editMessage').innerHTML = 
-                    '<div class="error-message">食材の更新に失敗しました</div>';
-            }
-        });
-
-        // アイテム削除
-        async function deleteItem(id) {
-            if (!confirm('この食材を削除しますか？')) return;
-
-            try {
-                const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-                const targetUrl = `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${AIRTABLE_TABLE_NAME}/${id}`;
-                
-                const response = await fetch(proxyUrl + targetUrl, {
-                    method: 'DELETE',
-                    headers: {
-                        'Authorization': `Bearer ${AIRTABLE_API_KEY}`,
-                        'X-Requested-With': 'XMLHttpRequest'
+                        'Authorization': `Bearer ${airtableConfig.token}`
                     }
                 });
 
-                if (response.ok) {
-                    loadData();
-                } else {
-                    throw new Error('Failed to delete item');
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
                 }
+
+                const data = await response.json();
+                
+                inventory = data.records.map(record => ({
+                    name: record.fields.name || '',
+                    quantity: record.fields.quantity || '',
+                    prepDate: record.fields.prepDate || '',
+                    expiryDate: record.fields.expiryDate || '',
+                    storageType: record.fields.storageType || '冷蔵',
+                    location: record.fields.location || '',
+                    staff: record.fields.staff || '',
+                    notes: record.fields.notes || '',
+                    airtableId: record.id
+                })).filter(item => item.name && item.expiryDate);
+
+                saveData();
+                renderTable();
+                loadingSpan.remove();
+                alert(`✅ ${inventory.length}件のデータを同期しました`);
             } catch (error) {
-                console.error('Error deleting item:', error);
-                alert('食材の削除に失敗しました');
+                console.error('同期エラー:', error);
+                alert(`同期でエラーが発生しました: ${error.message}`);
+                document.querySelector('.loading')?.remove();
             }
         }
 
-        // モーダルの外側をクリックで閉じる
-        window.onclick = function(event) {
-            const addModal = document.getElementById('addModal');
-            const editModal = document.getElementById('editModal');
-            if (event.target === addModal) {
-                closeAddModal();
-            }
-            if (event.target === editModal) {
-                closeEditModal();
+        function handleLogin(event) {
+            event.preventDefault();
+            const password = document.getElementById('password').value;
+            const errorMessage = document.getElementById('errorMessage');
+            const loginContainer = document.querySelector('.login-container');
+            
+            if (password === CORRECT_PASSWORD) {
+                isLoggedIn = true;
+                document.getElementById('loginScreen').classList.add('hidden');
+                document.getElementById('mainScreen').classList.remove('hidden');
+                document.getElementById('floatingButtons').style.display = 'flex';
+                
+                updateConnectionStatus(true);
+                loadData();
+                renderTable();
+                updateItemNameOptions();
+                startCountdownTimer();
+
+                console.log('ログイン完了 - セッション中データ保持（artifacts環境）');
+            } else {
+                errorMessage.style.display = 'block';
+                loginContainer.classList.add('shake');
+                document.getElementById('password').value = '';
+                
+                setTimeout(() => {
+                    loginContainer.classList.remove('shake');
+                }, 500);
+                
+                setTimeout(() => {
+                    errorMessage.style.display = 'none';
+                }, 3000);
             }
         }
 
-        // 初期化時にAPIキーをチェック
-        if (!AIRTABLE_API_KEY || AIRTABLE_API_KEY === 'YOUR_AIRTABLE_API_KEY') {
-            console.error('Airtable APIキーが設定されていません');
+        function logout() {
+            if (confirm('ログアウトしますか？')) {
+                isLoggedIn = false;
+                document.getElementById('mainScreen').classList.add('hidden');
+                document.getElementById('loginScreen').classList.remove('hidden');
+                document.getElementById('floatingButtons').style.display = 'none';
+                
+                if (countdownInterval) {
+                    clearInterval(countdownInterval);
+                }
+                
+                document.getElementById('password').value = '';
+                hideAddForm();
+                closeScheduleModal();
+                closeRestoreModal();
+                closeIngredientMasterModal();
+                
+                console.log('ログアウトしました（セッション中のデータは保持）');
+            }
         }
+
+        // 食材マスター管理機能
+        let ingredientMasters = [];
+        let deletedIngredientMasters = [];
+        let editingIngredientIndex = -1;
+
+        function initializeIngredientMasters() {
+            ingredientMasters = [
+                { name: "もやし", category: "食材", hours: 24 },
+                { name: "レタス", category: "食材", hours: 48 },
+                { name: "キャベツ", category: "食材", hours: 72 },
+                { name: "味噌スープ", category: "仕込み", hours: 72 },
+                { name: "豚タン", category: "仕込み", hours: 60 },
+                { name: "チャーシュー", category: "仕込み", hours: 72 },
+                { name: "煮卵（悪魔の味玉）", category: "仕込み", hours: 48 },
+                { name: "焼きそば麺（味付き）", category: "仕込み", hours: 36 },
+                { name: "チャーハン", category: "仕込み", hours: 36 },
+                { name: "餃子（鉄板焼き餃子）", category: "仕込み", hours: 12 },
+                { name: "ガーリックシュリンプ", category: "仕込み", hours: 24 },
+                { name: "イイダコ", category: "仕込み", hours: 24 },
+                { name: "サラダ用野菜", category: "食材", hours: 36 },
+                { name: "ポテトサラダ", category: "仕込み", hours: 48 },
+                { name: "もやしナムル", category: "仕込み", hours: 24 },
+                { name: "玉こん酢味噌", category: "仕込み", hours: 60 },
+                { name: "ピリ辛メンマ", category: "仕込み", hours: 120 },
+                { name: "梅クラゲ", category: "仕込み", hours: 168 },
+                { name: "くらげ刺し", category: "仕込み", hours: 12 }
+            ];
+        }
+
+        function updateItemNameOptions() {
+            const itemNameSelect = document.getElementById('itemName');
+            itemNameSelect.innerHTML = '<option value="">選択してください</option>';
+            
+            const categories = {
+                '食材': [],
+                '仕込み': []
+            };
+            
+            ingredientMasters.forEach(ingredient => {
+                categories[ingredient.category].push(ingredient);
+            });
+            
+            Object.keys(categories).forEach(category => {
+                if (categories[category].length > 0) {
+                    const optgroup = document.createElement('optgroup');
+                    optgroup.label = category;
+                    
+                    categories[category].forEach(ingredient => {
+                        const option = document.createElement('option');
+                        option.value = ingredient.name;
+                        option.textContent = ingredient.name;
+                        optgroup.appendChild(option);
+                    });
+                    
+                    itemNameSelect.appendChild(optgroup);
+                }
+            });
+        }
+
+        function showIngredientMasterModal() {
+            renderIngredientMasterList();
+            document.getElementById('ingredientMasterModal').style.display = 'flex';
+        }
+
+        function closeIngredientMasterModal() {
+            document.getElementById('ingredientMasterModal').style.display = 'none';
+            cancelIngredientEdit();
+        }
+
+        function addOrUpdateIngredient() {
+            const name = document.getElementById('newIngredientName').value.trim();
+            const category = document.getElementById('newIngredientCategory').value;
+            const hours = parseInt(document.getElementById('newIngredientHours').value);
+            
+            if (!name) {
+                alert('食材名を入力してください');
+                return;
+            }
+            
+            if (!hours || hours < 1) {
+                alert('消費期限（時間）を正しく入力してください');
+                return;
+            }
+            
+            if (editingIngredientIndex >= 0) {
+                ingredientMasters[editingIngredientIndex] = { name, category, hours };
+                cancelIngredientEdit();
+            } else {
+                if (ingredientMasters.find(ingredient => ingredient.name === name)) {
+                    alert('この食材は既に登録されています');
+                    return;
+                }
+                ingredientMasters.push({ name, category, hours });
+            }
+            
+            document.getElementById('newIngredientName').value = '';
+            document.getElementById('newIngredientCategory').value = '食材';
+            document.getElementById('newIngredientHours').value = '';
+            
+            renderIngredientMasterList();
+            updateItemNameOptions();
+            saveData();
+        }
+
+        function editIngredient(index) {
+            const ingredient = ingredientMasters[index];
+            editingIngredientIndex = index;
+            
+            document.getElementById('newIngredientName').value = ingredient.name;
+            document.getElementById('newIngredientCategory').value = ingredient.category;
+            document.getElementById('newIngredientHours').value = ingredient.hours;
+            
+            document.getElementById('ingredientBtn').textContent = '更新';
+            document.getElementById('ingredientBtn').style.background = '#ffc107';
+            document.getElementById('cancelIngredientEditBtn').style.display = 'inline-block';
+        }
+
+        function cancelIngredientEdit() {
+            editingIngredientIndex = -1;
+            document.getElementById('newIngredientName').value = '';
+            document.getElementById('newIngredientCategory').value = '食材';
+            document.getElementById('newIngredientHours').value = '';
+            
+            document.getElementById('ingredientBtn').textContent = '追加';
+            document.getElementById('ingredientBtn').style.background = '#28a745';
+            document.getElementById('cancelIngredientEditBtn').style.display = 'none';
+        }
+
+        function removeIngredient(index) {
+            if (confirm('この食材をマスターから削除しますか？')) {
+                const deletedIngredient = ingredientMasters[index];
+                deletedIngredient.deletedAt = new Date().toISOString();
+                deletedIngredientMasters.push(deletedIngredient);
+                
+                ingredientMasters.splice(index, 1);
+                renderIngredientMasterList();
+                updateItemNameOptions();
+                saveData();
+            }
+        }
+
+        function renderIngredientMasterList() {
+            const ingredientsContainer = document.getElementById('ingredientsList');
+            const preparedContainer = document.getElementById('preparedList');
+            
+            const ingredients = ingredientMasters.filter(item => item.category === '食材');
+            const prepared = ingredientMasters.filter(item => item.category === '仕込み');
+            
+            // 食材リスト
+            if (ingredients.length === 0) {
+                ingredientsContainer.innerHTML = '<p style="text-align: center; color: #666; padding: 20px;">食材が登録されていません</p>';
+            } else {
+                ingredientsContainer.innerHTML = ingredients.map((ingredient, index) => {
+                    const originalIndex = ingredientMasters.indexOf(ingredient);
+                    return `
+                        <div class="ingredient-item">
+                            <div class="ingredient-info">
+                                <strong>${ingredient.name}</strong>
+                                <div style="font-size: 12px; color: #666;">消費期限: ${ingredient.hours}時間</div>
+                            </div>
+                            <div class="ingredient-actions">
+                                <button onclick="editIngredient(${originalIndex})" style="background: #ffc107; color: #212529; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; margin-right: 5px;">編集</button>
+                                <button onclick="removeIngredient(${originalIndex})" style="background: #dc3545; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px;">削除</button>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+            
+            // 仕込みリスト
+            if (prepared.length === 0) {
+                preparedContainer.innerHTML = '<p style="text-align: center; color: #666; padding: 20px;">仕込み品が登録されていません</p>';
+            } else {
+                preparedContainer.innerHTML = prepared.map((ingredient, index) => {
+                    const originalIndex = ingredientMasters.indexOf(ingredient);
+                    return `
+                        <div class="ingredient-item">
+                            <div class="ingredient-info">
+                                <strong>${ingredient.name}</strong>
+                                <div style="font-size: 12px; color: #666;">消費期限: ${ingredient.hours}時間</div>
+                            </div>
+                            <div class="ingredient-actions">
+                                <button onclick="editIngredient(${originalIndex})" style="background: #ffc107; color: #212529; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; margin-right: 5px;">編集</button>
+                                <button onclick="removeIngredient(${originalIndex})" style="background: #dc3545; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px;">削除</button>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+        }
+
+        function showDeletedIngredients() {
+            if (deletedIngredientMasters.length === 0) {
+                alert('削除された食材はありません');
+                return;
+            }
+            
+            let message = '削除された食材一覧:\n\n';
+            deletedIngredientMasters.forEach((ingredient, index) => {
+                const deleteDate = new Date(ingredient.deletedAt).toLocaleString('ja-JP');
+                message += `${index + 1}. ${ingredient.name} (${ingredient.category}, ${ingredient.hours}時間) - 削除: ${deleteDate}\n`;
+            });
+            message += '\n復元したい食材の番号を入力してください（複数選択は「1,3,5」のように）:';
+            
+            const input = prompt(message);
+            if (input) {
+                const indices = input.split(',').map(i => parseInt(i.trim()) - 1);
+                restoreIngredients(indices);
+            }
+        }
+
+        function restoreIngredients(indices) {
+            const restored = [];
+            indices.forEach(index => {
+                if (index >= 0 && index < deletedIngredientMasters.length) {
+                    const ingredient = deletedIngredientMasters[index];
+                    
+                    if (!ingredientMasters.find(i => i.name === ingredient.name)) {
+                        const restoredIngredient = {
+                            name: ingredient.name,
+                            category: ingredient.category,
+                            hours: ingredient.hours
+                        };
+                        ingredientMasters.push(restoredIngredient);
+                        restored.push(ingredient.name);
+                    }
+                }
+            });
+            
+            indices.sort((a, b) => b - a).forEach(index => {
+                if (index >= 0 && index < deletedIngredientMasters.length) {
+                    deletedIngredientMasters.splice(index, 1);
+                }
+            });
+            
+            if (restored.length > 0) {
+                alert(`以下の食材を復元しました:\n${restored.join('\n')}`);
+                renderIngredientMasterList();
+                updateItemNameOptions();
+                saveData();
+            } else {
+                alert('復元できる食材がありませんでした');
+            }
+        }
+
+        // 既存の在庫管理システムのコード
+        let inventory = [];
+        let deletedItems = [];
+        let productMasters = [];
+        let deletedProductMasters = [];
+        let editingProductIndex = -1;
+        let editingIndex = -1;
+        let countdownInterval;
+
+        function initializeProductMasters() {
+            productMasters = [
+                { name: "豚タン", hours: 60, servings: 10 },
+                { name: "チャーシュー", hours: 72, servings: 15 },
+                { name: "焼きそば麺（味付き）", hours: 36, servings: 8 },
+                { name: "ガーリックシュリンプ", hours: 24, servings: 6 },
+                { name: "イイダコのバター醤油", hours: 24, servings: 5 },
+                { name: "ポテトサラダ", hours: 48, servings: 12 },
+                { name: "もやしナムル", hours: 24, servings: 8 },
+                { name: "玉こん酢味噌", hours: 60, servings: 10 },
+                { name: "ピリ辛メンマ", hours: 120, servings: 20 },
+                { name: "梅クラゲ", hours: 168, servings: 15 },
+                { name: "くらげ刺し", hours: 12, servings: 4 }
+            ];
+        }
+
+        function saveData() {
+            // Claude.ai artifacts環境ではlocalStorageが使用できないため、
+            // データはセッション中のみメモリに保持されます
+            console.log('データをメモリに保存しました（セッション中のみ有効）');
+        }
+
+        function loadData() {
+            try {
+                // 初期データの設定（localStorageの代わり）
+                if (inventory.length === 0) {
+                    inventory = [
+                        {
+                            name: "キャベツ",
+                            quantity: "1000g",
+                            prepDate: "2025-06-07T10:00",
+                            expiryDate: "2025-06-09T10:00",
+                            storageType: "冷蔵",
+                            location: "冷蔵庫1",
+                            staff: "後藤",
+                            notes: "使いかけ／サラダ用"
+                        },
+                        {
+                            name: "もやし",
+                            quantity: "500g",
+                            prepDate: "2025-06-06T14:30",
+                            expiryDate: "2025-06-07T14:30",
+                            storageType: "冷蔵",
+                            location: "冷蔵庫1",
+                            staff: "火山",
+                            notes: "痛みやすいので注意"
+                        },
+                        {
+                            name: "チャーシュー",
+                            quantity: "1500g",
+                            prepDate: "2025-06-05T09:00",
+                            expiryDate: "2025-06-08T09:00",
+                            storageType: "冷蔵",
+                            location: "冷蔵庫（倉庫）",
+                            staff: "原",
+                            notes: "スライス済み"
+                        }
+                    ];
+                }
+
+                if (deletedItems.length === 0) {
+                    deletedItems = [];
+                }
+
+                if (productMasters.length === 0) {
+                    initializeProductMasters();
+                }
+
+                if (deletedProductMasters.length === 0) {
+                    deletedProductMasters = [];
+                }
+
+                if (ingredientMasters.length === 0) {
+                    initializeIngredientMasters();
+                }
+
+                if (deletedIngredientMasters.length === 0) {
+                    deletedIngredientMasters = [];
+                }
+
+                console.log('初期データを設定しました');
+            } catch (error) {
+                console.error('データ読み込みエラー:', error);
+                initializeProductMasters();
+                initializeIngredientMasters();
+                inventory = [];
+                deletedItems = [];
+                deletedProductMasters = [];
+                deletedIngredientMasters = [];
+            }
+        }
+
+        function saveDeletedItem(item) {
+            const deletedItem = {
+                ...item,
+                deletedAt: new Date().toISOString(),
+                id: Date.now() + Math.random()
+            };
+            deletedItems.push(deletedItem);
+            
+            const threeDaysAgo = new Date();
+            threeDaysAgo.setDate(threeDaysAgo.getDate() - 3);
+            deletedItems = deletedItems.filter(item => 
+                new Date(item.deletedAt) > threeDaysAgo
+            );
+            
+            saveData();
+        }
+
+        function getDeletedItems() {
+            const threeDaysAgo = new Date();
+            threeDaysAgo.setDate(threeDaysAgo.getDate() - 3);
+            return deletedItems.filter(item => new Date(item.deletedAt) > threeDaysAgo);
+        }
+
+        function restoreItem(deletedItem) {
+            const restoredItem = {
+                name: deletedItem.name,
+                quantity: deletedItem.quantity,
+                prepDate: deletedItem.prepDate,
+                expiryDate: deletedItem.expiryDate,
+                storageType: deletedItem.storageType,
+                location: deletedItem.location,
+                staff: deletedItem.staff,
+                notes: deletedItem.notes
+            };
+            
+            inventory.push(restoredItem);
+            saveToAirtable(restoredItem);
+            
+            renderTable();
+            deletedItems = deletedItems.filter(item => item.id !== deletedItem.id);
+            saveData();
+        }
+
+        function formatDateTime(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleString('ja-JP', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                timeZone: 'Asia/Tokyo'
+            });
+        }
+
+        function calculateExpiry() {
+            const itemName = document.getElementById('itemName').value;
+            const prepDateInput = document.getElementById('prepDate');
+            const expiryDateInput = document.getElementById('expiryDate');
+            
+            if (!itemName || !prepDateInput.value) {
+                expiryDateInput.value = '';
+                return;
+            }
+            
+            const ingredient = ingredientMasters.find(i => i.name === itemName);
+            const hours = ingredient ? ingredient.hours : 72;
+            
+            const prepDate = new Date(prepDateInput.value);
+            const expiryDate = new Date(prepDate.getTime() + (hours * 60 * 60 * 1000));
+            
+            const year = expiryDate.getFullYear();
+            const month = String(expiryDate.getMonth() + 1).padStart(2, '0');
+            const day = String(expiryDate.getDate()).padStart(2, '0');
+            const hour = String(expiryDate.getHours()).padStart(2, '0');
+            const minute = String(expiryDate.getMinutes()).padStart(2, '0');
+            
+            const localTimeString = `${year}-${month}-${day}T${hour}:${minute}`;
+            expiryDateInput.value = localTimeString;
+        }
+
+        function setCurrentTime() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            
+            const timeString = `${year}-${month}-${day}T${hours}:${minutes}`;
+            document.getElementById('prepDate').value = timeString;
+            calculateExpiry();
+        }
+
+        function getTimeUntilExpiry(expiryDate) {
+            const now = new Date();
+            const expiry = new Date(expiryDate);
+            const diffTime = expiry - now;
+            
+            if (diffTime <= 0) {
+                return { expired: true, text: "期限切れ" };
+            }
+            
+            const totalSeconds = Math.floor(diffTime / 1000);
+            const hours = Math.floor(totalSeconds / 3600);
+            const minutes = Math.floor((totalSeconds % 3600) / 60);
+            const seconds = totalSeconds % 60;
+            
+            if (hours < 24) {
+                const hoursStr = String(hours).padStart(2, '0');
+                const minutesStr = String(minutes).padStart(2, '0');
+                const secondsStr = String(seconds).padStart(2, '0');
+                return { 
+                    urgent: true, 
+                    text: `残り${hoursStr}:${minutesStr}:${secondsStr}`,
+                    totalSeconds: totalSeconds
+                };
+            }
+            
+            const days = Math.floor(hours / 24);
+            const remainingHours = hours % 24;
+            
+            if (days === 0) {
+                return { text: `${remainingHours}時間` };
+            } else if (days === 1) {
+                return { warning: true, text: `${days}日${remainingHours}時間` };
+            } else {
+                return { text: `${days}日${remainingHours}時間` };
+            }
+        }
+
+        function getStatusClass(expiryDate) {
+            const timeInfo = getTimeUntilExpiry(expiryDate);
+            if (timeInfo.expired) return 'expired';
+            if (timeInfo.urgent) return 'countdown';
+            if (timeInfo.warning) return 'warning';
+            return '';
+        }
+
+        function getStorageBadge(storageType) {
+            const badges = {
+                '冷蔵': 'status-refrigerated',
+                '常温': 'status-room'
+            };
+            return `<span class="status-badge ${badges[storageType] || ''}">${storageType}</span>`;
+        }
+
+        function renderTable() {
+            if (!isLoggedIn) return;
+            
+            const tbody = document.getElementById('inventoryBody');
+            const searchTerm = document.getElementById('searchBox').value.toLowerCase();
+            const sortOption = document.getElementById('sortOptions').value;
+            
+            let filteredInventory = inventory.filter(item => {
+                const name = item.name || '';
+                const notes = item.notes || '';
+                return name.toLowerCase().includes(searchTerm) ||
+                       notes.toLowerCase().includes(searchTerm);
+            });
+
+            if (sortOption === 'prepDate') {
+                filteredInventory.sort((a, b) => new Date(a.prepDate || 0) - new Date(b.prepDate || 0));
+            } else if (sortOption === 'expiryDate') {
+                filteredInventory.sort((a, b) => new Date(a.expiryDate || 0) - new Date(b.expiryDate || 0));
+            }
+
+            tbody.innerHTML = '';
+            filteredInventory.forEach((item, index) => {
+                if (!item.name || !item.quantity || !item.expiryDate) {
+                    return;
+                }
+                
+                const timeInfo = getTimeUntilExpiry(item.expiryDate);
+                const statusClass = getStatusClass(item.expiryDate);
+                const originalIndex = inventory.indexOf(item);
+                const row = document.createElement('tr');
+                
+                let expiryDisplay = formatDateTime(item.expiryDate);
+                if (timeInfo.urgent || timeInfo.expired) {
+                    expiryDisplay += `<br><span class="${statusClass}">${timeInfo.text}</span>`;
+                }
+                
+                row.innerHTML = `
+                    <td>${item.name || ''}</td>
+                    <td>${item.quantity || ''}</td>
+                    <td>${item.prepDate ? formatDateTime(item.prepDate) : ''}</td>
+                    <td>${expiryDisplay}</td>
+                    <td>${getStorageBadge(item.storageType || '冷蔵')}</td>
+                    <td>${item.location || ''}</td>
+                    <td>${item.staff || ''}</td>
+                    <td>${item.notes || ''}</td>
+                    <td>
+                        <button class="action-btn edit-btn" onclick="editItem(${originalIndex})">編集</button>
+                        <button class="action-btn delete-btn" onclick="deleteItem(${originalIndex})">削除</button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+
+            updateStats();
+        }
+
+        function updateStats() {
+            if (!isLoggedIn) return;
+            
+            const total = inventory.length;
+            const expired = inventory.filter(item => getTimeUntilExpiry(item.expiryDate).expired).length;
+            const urgent = inventory.filter(item => getTimeUntilExpiry(item.expiryDate).urgent).length;
+
+            document.getElementById('totalItems').textContent = total;
+            document.getElementById('expiredItems').textContent = expired;
+            document.getElementById('urgentItems').textContent = urgent;
+        }
+
+        function showAddForm() {
+            document.getElementById('addForm').style.display = 'block';
+            document.getElementById('prepDate').value = '';
+            document.getElementById('expiryDate').value = '';
+            
+            // スクロールして追加フォームを表示
+            document.getElementById('addForm').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function hideAddForm() {
+            document.getElementById('addForm').style.display = 'none';
+            clearForm();
+            editingIndex = -1;
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.textContent = '✅ 追加';
+            submitBtn.onclick = addItem;
+        }
+
+        function clearForm() {
+            document.getElementById('itemName').value = '';
+            document.getElementById('quantity').value = '';
+            document.getElementById('prepDate').value = '';
+            document.getElementById('expiryDate').value = '';
+            document.getElementById('storageType').value = '冷蔵';
+            document.getElementById('location').value = '冷蔵庫1';
+            document.getElementById('staff').value = '';
+            document.getElementById('notes').value = '';
+        }
+
+        async function addItem() {
+            const newItem = {
+                name: document.getElementById('itemName').value,
+                quantity: document.getElementById('quantity').value,
+                prepDate: document.getElementById('prepDate').value,
+                expiryDate: document.getElementById('expiryDate').value,
+                storageType: document.getElementById('storageType').value,
+                location: document.getElementById('location').value,
+                staff: document.getElementById('staff').value,
+                notes: document.getElementById('notes').value
+            };
+
+            if (!newItem.name || !newItem.quantity || !newItem.staff) {
+                alert('食材名、数量、担当者は必須項目です。');
+                return;
+            }
+
+            if (editingIndex >= 0) {
+                const oldItem = inventory[editingIndex];
+                inventory[editingIndex] = { ...newItem, airtableId: oldItem.airtableId };
+                
+                if (oldItem.airtableId) {
+                    await saveToAirtable(newItem, oldItem.airtableId);
+                }
+            } else {
+                const airtableId = await saveToAirtable(newItem);
+                inventory.push({ ...newItem, airtableId });
+            }
+            
+            saveData();
+            renderTable();
+            hideAddForm();
+        }
+
+        async function deleteItem(index) {
+            if (confirm('この食材を削除しますか？')) {
+                const deletedItem = inventory[index];
+                saveDeletedItem(deletedItem);
+                
+                if (deletedItem.airtableId) {
+                    await deleteFromAirtable(deletedItem.airtableId);
+                }
+                
+                inventory.splice(index, 1);
+                saveData();
+                renderTable();
+            }
+        }
+
+        function editItem(index) {
+            const item = inventory[index];
+            editingIndex = index;
+            
+            document.getElementById('itemName').value = item.name;
+            document.getElementById('quantity').value = item.quantity;
+            document.getElementById('prepDate').value = item.prepDate;
+            document.getElementById('expiryDate').value = item.expiryDate;
+            document.getElementById('storageType').value = item.storageType;
+            document.getElementById('location').value = item.location;
+            document.getElementById('staff').value = item.staff;
+            document.getElementById('notes').value = item.notes;
+            
+            showAddForm();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.textContent = '✅ 更新';
+            submitBtn.onclick = addItem;
+        }
+
+        async function clearExpired() {
+            if (confirm('期限切れの食材をすべて削除しますか？')) {
+                const expiredItems = inventory.filter(item => getTimeUntilExpiry(item.expiryDate).expired);
+                
+                expiredItems.forEach(item => {
+                    saveDeletedItem(item);
+                    if (item.airtableId) {
+                        deleteFromAirtable(item.airtableId);
+                    }
+                });
+                
+                inventory = inventory.filter(item => !getTimeUntilExpiry(item.expiryDate).expired);
+                saveData();
+                renderTable();
+            }
+        }
+
+        // 復元モーダル関連
+        function showRestoreModal() {
+            const deletedItems = getDeletedItems();
+            let content = '';
+            
+            if (deletedItems.length === 0) {
+                content = '<p style="text-align: center; color: #666; padding: 40px;">復元可能なデータはありません</p>';
+            } else {
+                content = '<div style="max-height: 400px; overflow-y: auto;">';
+                
+                const groupedByDate = {};
+                deletedItems.forEach(item => {
+                    const deleteDate = new Date(item.deletedAt).toLocaleDateString('ja-JP');
+                    if (!groupedByDate[deleteDate]) {
+                        groupedByDate[deleteDate] = [];
+                    }
+                    groupedByDate[deleteDate].push(item);
+                });
+                
+                Object.keys(groupedByDate).sort().reverse().forEach(date => {
+                    content += `<h4 style="color: #6f42c1; margin: 20px 0 10px 0; border-bottom: 1px solid #eee; padding-bottom: 5px;">${date}に削除</h4>`;
+                    
+                    groupedByDate[date].forEach(item => {
+                        const deleteTime = new Date(item.deletedAt).toLocaleTimeString('ja-JP', {hour: '2-digit', minute: '2-digit'});
+                        const timeInfo = getTimeUntilExpiry(item.expiryDate);
+                        let statusText = '';
+                        let statusColor = '#666';
+                        
+                        if (timeInfo.expired) {
+                            statusText = '期限切れ';
+                            statusColor = '#dc3545';
+                        } else if (timeInfo.urgent) {
+                            statusText = timeInfo.text;
+                            statusColor = '#dc3545';
+                        } else if (timeInfo.warning) {
+                            statusText = timeInfo.text;
+                            statusColor = '#fd7e14';
+                        } else {
+                            statusText = timeInfo.text;
+                        }
+                        
+                        content += `
+                            <div style="background: #f8f9fa; border-radius: 8px; padding: 15px; margin-bottom: 10px; border-left: 4px solid #6f42c1;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                    <h5 style="margin: 0; color: #2c3e50;">${item.name} (${item.quantity})</h5>
+                                    <button class="btn" onclick="restoreItem({id: '${item.id}', name: '${item.name}', quantity: '${item.quantity}', prepDate: '${item.prepDate}', expiryDate: '${item.expiryDate}', storageType: '${item.storageType}', location: '${item.location}', staff: '${item.staff}', notes: '${item.notes}'}); closeRestoreModal();" 
+                                            style="background: #28a745; color: white; font-size: 12px; padding: 6px 12px;">復元</button>
+                                </div>
+                                <div style="font-size: 12px; color: #666;">
+                                    <span>削除時刻: ${deleteTime}</span> | 
+                                    <span>担当者: ${item.staff}</span> | 
+                                    <span>保存場所: ${item.location}</span>
+                                </div>
+                                <div style="font-size: 12px; margin-top: 4px;">
+                                    <span>賞味期限: ${formatDateTime(item.expiryDate)}</span>
+                                    <span style="color: ${statusColor}; font-weight: bold; margin-left: 10px;">(${statusText})</span>
+                                </div>
+                                ${item.notes ? `<div style="font-size: 12px; color: #888; margin-top: 4px;">備考: ${item.notes}</div>` : ''}
+                            </div>
+                        `;
+                    });
+                });
+                
+                content += '</div>';
+            }
+            
+            document.getElementById('restoreContent').innerHTML = content;
+            document.getElementById('restoreModal').style.display = 'flex';
+        }
+
+        function closeRestoreModal() {
+            document.getElementById('restoreModal').style.display = 'none';
+        }
+
+        // 仕込みスケジュール管理機能
+        function addOrUpdateProductMaster() {
+            const name = document.getElementById('newProductName').value.trim();
+            const hours = parseInt(document.getElementById('newProductHours').value);
+            const servings = parseInt(document.getElementById('newProductServings').value);
+            
+            if (!name || !hours || !servings || hours < 1 || servings < 1) {
+                alert('商品名、消費期限、人数をすべて正しく入力してください');
+                return;
+            }
+            
+            if (editingProductIndex >= 0) {
+                productMasters[editingProductIndex] = { name, hours, servings };
+                cancelProductEdit();
+            } else {
+                if (productMasters.find(product => product.name === name)) {
+                    alert('この商品は既に登録されています');
+                    return;
+                }
+                productMasters.push({ name, hours, servings });
+            }
+            
+            document.getElementById('newProductName').value = '';
+            document.getElementById('newProductHours').value = '';
+            document.getElementById('newProductServings').value = '';
+            
+            renderProductMasterList();
+            updateScheduleDisplay();
+            saveData();
+        }
+
+        function editProductMaster(index) {
+            const product = productMasters[index];
+            editingProductIndex = index;
+            
+            document.getElementById('newProductName').value = product.name;
+            document.getElementById('newProductHours').value = product.hours;
+            document.getElementById('newProductServings').value = product.servings;
+            
+            document.getElementById('productMasterBtn').textContent = '更新';
+            document.getElementById('productMasterBtn').style.background = '#ffc107';
+            document.getElementById('cancelEditBtn').style.display = 'inline-block';
+        }
+
+        function cancelProductEdit() {
+            editingProductIndex = -1;
+            document.getElementById('newProductName').value = '';
+            document.getElementById('newProductHours').value = '';
+            document.getElementById('newProductServings').value = '';
+            
+            document.getElementById('productMasterBtn').textContent = '追加';
+            document.getElementById('productMasterBtn').style.background = '#28a745';
+            document.getElementById('cancelEditBtn').style.display = 'none';
+        }
+
+        function removeProductMaster(index) {
+            if (confirm('この商品をマスターから削除しますか？')) {
+                const deletedProduct = productMasters[index];
+                deletedProduct.deletedAt = new Date().toISOString();
+                deletedProductMasters.push(deletedProduct);
+                
+                productMasters.splice(index, 1);
+                renderProductMasterList();
+                updateScheduleDisplay();
+                saveData();
+            }
+        }
+
+        function showDeletedProducts() {
+            if (deletedProductMasters.length === 0) {
+                alert('削除された商品はありません');
+                return;
+            }
+            
+            let message = '削除された商品一覧:\n\n';
+            deletedProductMasters.forEach((product, index) => {
+                const deleteDate = new Date(product.deletedAt).toLocaleString('ja-JP');
+                message += `${index + 1}. ${product.name} (${product.hours}時間, ${product.servings}人分) - 削除: ${deleteDate}\n`;
+            });
+            message += '\n復元したい商品の番号を入力してください（複数選択は「1,3,5」のように）:';
+            
+            const input = prompt(message);
+            if (input) {
+                const indices = input.split(',').map(i => parseInt(i.trim()) - 1);
+                restoreProducts(indices);
+            }
+        }
+
+        function restoreProducts(indices) {
+            const restored = [];
+            indices.forEach(index => {
+                if (index >= 0 && index < deletedProductMasters.length) {
+                    const product = deletedProductMasters[index];
+                    
+                    if (!productMasters.find(p => p.name === product.name)) {
+                        const restoredProduct = {
+                            name: product.name,
+                            hours: product.hours,
+                            servings: product.servings
+                        };
+                        productMasters.push(restoredProduct);
+                        restored.push(product.name);
+                    }
+                }
+            });
+            
+            indices.sort((a, b) => b - a).forEach(index => {
+                if (index >= 0 && index < deletedProductMasters.length) {
+                    deletedProductMasters.splice(index, 1);
+                }
+            });
+            
+            if (restored.length > 0) {
+                alert(`以下の商品を復元しました:\n${restored.join('\n')}`);
+                renderProductMasterList();
+                updateScheduleDisplay();
+                saveData();
+            } else {
+                alert('復元できる商品がありませんでした');
+            }
+        }
+
+        function renderProductMasterList() {
+            const container = document.getElementById('productMasterList');
+            let html = '';
+            
+            productMasters.forEach((product, index) => {
+                html += `
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: white; border-radius: 4px; margin-bottom: 5px;">
+                        <div>
+                            <strong>${product.name}</strong>
+                            <div style="font-size: 12px; color: #666;">
+                                消費期限: ${product.hours}時間 | 人数: ${product.servings}人分
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 5px;">
+                            <button onclick="editProductMaster(${index})" style="background: #ffc107; color: #212529; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 12px;">編集</button>
+                            <button onclick="removeProductMaster(${index})" style="background: #dc3545; color: white; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 12px;">削除</button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html || '<p style="text-align: center; color: #666;">商品が登録されていません</p>';
+        }
+
+        function calculatePrepSchedule() {
+            const now = new Date();
+            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            const tomorrow = new Date(today.getTime() + (24 * 60 * 60 * 1000));
+            const schedules = [];
+            
+            inventory.forEach(item => {
+                const productMaster = productMasters.find(p => p.name === item.name);
+                if (productMaster) {
+                    const expiryDate = new Date(item.expiryDate);
+                    const prepTime = new Date(expiryDate.getTime() - (24 * 60 * 60 * 1000));
+                    
+                    let urgencyLevel = 4;
+                    let urgencyText = '予定';
+                    
+                    if (prepTime <= today) {
+                        urgencyLevel = 2;
+                        urgencyText = '本日仕込み';
+                    } else if (prepTime <= tomorrow) {
+                        urgencyLevel = 3;
+                        urgencyText = '明日仕込み';
+                    }
+                    
+                    schedules.push({
+                        name: item.name,
+                        currentExpiry: expiryDate,
+                        nextPrepTime: prepTime,
+                        hours: productMaster.hours,
+                        urgencyLevel: urgencyLevel,
+                        urgencyText: urgencyText,
+                        isUpcoming: prepTime <= new Date(now.getTime() + (48 * 60 * 60 * 1000)) && prepTime > new Date(now.getTime() - (24 * 60 * 60 * 1000)),
+                        isOverdue: prepTime < today
+                    });
+                }
+            });
+            
+            productMasters.forEach(master => {
+                if (!inventory.find(item => item.name === master.name)) {
+                    schedules.push({
+                        name: master.name,
+                        currentExpiry: null,
+                        nextPrepTime: new Date(now.getTime() + (master.hours * 60 * 60 * 1000)),
+                        hours: master.hours,
+                        urgencyLevel: 1,
+                        urgencyText: '在庫なし',
+                        isUpcoming: true,
+                        isOverdue: false,
+                        noStock: true
+                    });
+                }
+            });
+            
+            return schedules.sort((a, b) => {
+                if (a.urgencyLevel !== b.urgencyLevel) {
+                    return a.urgencyLevel - b.urgencyLevel;
+                }
+                
+                if (a.urgencyLevel === 1) {
+                    return a.hours - b.hours;
+                } else if (a.urgencyLevel === 4) {
+                    return a.hours - b.hours;
+                } else {
+                    return a.currentExpiry - b.currentExpiry;
+                }
+            });
+        }
+
+        function updateScheduleDisplay() {
+            const schedules = calculatePrepSchedule();
+            
+            const upcomingContainer = document.getElementById('upcomingSchedule');
+            const urgent = schedules.filter(s => s.urgencyLevel <= 3);
+            
+            if (urgent.length === 0) {
+                upcomingContainer.innerHTML = '<p style="text-align: center; color: #666;">現在、緊急の仕込み予定はありません</p>';
+            } else {
+                let upcomingHtml = '';
+                urgent.forEach(schedule => {
+                    let urgencyStyle = '';
+                    let urgencyIcon = '';
+                    
+                    switch(schedule.urgencyLevel) {
+                        case 1:
+                            urgencyStyle = 'background: #f8d7da; border-left: 4px solid #dc3545;';
+                            urgencyIcon = '🚨';
+                            break;
+                        case 2:
+                            urgencyStyle = 'background: #fff3cd; border-left: 4px solid #ffc107;';
+                            urgencyIcon = '⏰';
+                            break;
+                        case 3:
+                            urgencyStyle = 'background: #d1ecf1; border-left: 4px solid #17a2b8;';
+                            urgencyIcon = '📅';
+                            break;
+                    }
+                    
+                    upcomingHtml += `
+                        <div style="${urgencyStyle} padding: 12px; border-radius: 6px; margin-bottom: 8px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <strong>${schedule.name}</strong>
+                                <span style="font-size: 12px; font-weight: bold;">${urgencyIcon} ${schedule.urgencyText}</span>
+                            </div>
+                            <div style="font-size: 12px; color: #666; margin-top: 4px;">
+                                ${schedule.noStock ? 'すぐに仕込み開始推奨' : `推奨仕込み時刻: ${formatDateTime(schedule.nextPrepTime.toISOString())}`}
+                            </div>
+                            <div style="font-size: 12px; color: #666;">
+                                消費期限: ${schedule.hours}時間 | 人数: ${productMasters.find(p => p.name === schedule.name)?.servings || '未設定'}人分
+                                ${!schedule.noStock ? ` | 現在期限: ${formatDateTime(schedule.currentExpiry.toISOString())}` : ''}
+                            </div>
+                        </div>
+                    `;
+                });
+                upcomingContainer.innerHTML = upcomingHtml;
+            }
+            
+            const fullContainer = document.getElementById('fullSchedule');
+            if (schedules.length === 0) {
+                fullContainer.innerHTML = '<p style="text-align: center; color: #666;">スケジュールがありません</p>';
+            } else {
+                let fullHtml = '';
+                schedules.forEach(schedule => {
+                    let statusColor = '';
+                    let urgencyIcon = '';
+                    
+                    switch(schedule.urgencyLevel) {
+                        case 1:
+                            statusColor = '#dc3545';
+                            urgencyIcon = '🚨';
+                            break;
+                        case 2:
+                            statusColor = '#ffc107';
+                            urgencyIcon = '⏰';
+                            break;
+                        case 3:
+                            statusColor = '#17a2b8';
+                            urgencyIcon = '📅';
+                            break;
+                        default:
+                            statusColor = '#28a745';
+                            urgencyIcon = '📋';
+                    }
+                    
+                    fullHtml += `
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: white; border-radius: 6px; margin-bottom: 6px; border-left: 4px solid ${statusColor};">
+                            <div>
+                                <strong>${schedule.name}</strong>
+                                <div style="font-size: 12px; color: #666;">
+                                    ${schedule.noStock ? '在庫なし' : `現在期限: ${formatDateTime(schedule.currentExpiry.toISOString())}`}
+                                </div>
+                                <div style="font-size: 12px; color: #666;">
+                                    消費期限: ${schedule.hours}時間 | 人数: ${productMasters.find(p => p.name === schedule.name)?.servings || '未設定'}人分
+                                </div>
+                            </div>
+                            <div style="text-align: right;">
+                                <div style="font-size: 12px; color: ${statusColor}; font-weight: bold;">${urgencyIcon} ${schedule.urgencyText}</div>
+                                <div style="font-size: 12px; color: #666;">
+                                    ${schedule.noStock ? 'すぐに開始' : formatDateTime(schedule.nextPrepTime.toISOString())}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                fullContainer.innerHTML = fullHtml;
+            }
+        }
+
+        function showScheduleModal() {
+            renderProductMasterList();
+            updateScheduleDisplay();
+            document.getElementById('scheduleModal').style.display = 'flex';
+        }
+
+        function closeScheduleModal() {
+            document.getElementById('scheduleModal').style.display = 'none';
+        }
+
+        function exportToCSV() {
+            const headers = ['食材名', '数量', '入荷、仕込み日時', '賞味期限', '保存方法', '保存場所', '担当者', '備考'];
+            const csvContent = [
+                headers.join(','),
+                ...inventory.map(item => [
+                    item.name,
+                    item.quantity,
+                    formatDateTime(item.prepDate),
+                    formatDateTime(item.expiryDate),
+                    item.storageType,
+                    item.location,
+                    item.staff,
+                    item.notes
+                ].join(','))
+            ].join('\n');
+
+            const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = '神の手_在庫管理_' + new Date().toISOString().split('T')[0] + '.csv';
+            link.click();
+        }
+
+        function startCountdownTimer() {
+            countdownInterval = setInterval(() => {
+                renderTable();
+            }, 1000);
+        }
+
+        // 検索機能
+        document.getElementById('searchBox').addEventListener('input', renderTable);
+
+        // Enterキーでログイン
+        document.getElementById('password').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                handleLogin(e);
+            }
+        });
+
+        // 初期表示
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('loginScreen').classList.remove('hidden');
+            document.getElementById('mainScreen').classList.add('hidden');
+            document.getElementById('floatingButtons').style.display = 'none';
+        });
     </script>
-</body>
 </html>
