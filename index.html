@@ -834,8 +834,8 @@
     </div>
 
     <!-- 食材マスター管理モーダル -->
-    <div id="ingredientMasterModal" class="modal">
-        <div class="modal-content">
+    <div id="ingredientMasterModal" class="modal" onclick="closeModalOnBackgroundClick(event, 'ingredientMasterModal')">
+        <div class="modal-content" onclick="event.stopPropagation();">
             <h2 style="color: #6f42c1; margin-bottom: 20px;">🥬 食材マスター管理</h2>
             
             <!-- 新規追加フォーム -->
@@ -875,8 +875,8 @@
     </div>
 
     <!-- 仕込みスケジュールモーダル -->
-    <div id="scheduleModal" class="modal">
-        <div class="modal-content">
+    <div id="scheduleModal" class="modal" onclick="closeModalOnBackgroundClick(event, 'scheduleModal')">
+        <div class="modal-content" onclick="event.stopPropagation();">
             <h2 style="color: #28a745; margin-bottom: 20px;">📅 仕込みスケジュール管理</h2>
             
             <!-- 商品マスター管理 -->
@@ -912,8 +912,8 @@
     </div>
 
     <!-- 削除データ復元モーダル -->
-    <div id="restoreModal" class="modal">
-        <div class="modal-content">
+    <div id="restoreModal" class="modal" onclick="closeModalOnBackgroundClick(event, 'restoreModal')">
+        <div class="modal-content" onclick="event.stopPropagation();">
             <h2 style="color: #6f42c1; margin-bottom: 20px;">♻️ 削除されたデータの復元</h2>
             <p style="color: #666; margin-bottom: 20px;">過去3日間に削除されたデータから復元できます</p>
             <div id="restoreContent"></div>
@@ -922,6 +922,20 @@
     </div>
 
     <script>
+        // モーダル背景クリックで閉じる機能
+        function closeModalOnBackgroundClick(event, modalId) {
+            // クリックされた要素がモーダル背景（.modal）の場合のみ閉じる
+            if (event.target.classList.contains('modal')) {
+                document.getElementById(modalId).style.display = 'none';
+                
+                // 編集中の状態をリセット
+                if (modalId === 'ingredientMasterModal') {
+                    cancelIngredientEdit();
+                } else if (modalId === 'scheduleModal') {
+                    cancelProductEdit();
+                }
+            }
+        }
         // パスワード認証
         const CORRECT_PASSWORD = 'haramika';
         let isLoggedIn = false;
