@@ -33,12 +33,29 @@
             background: linear-gradient(45deg, #FF6B35, #F7931E);
             color: white;
             padding: 40px 30px;
-            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .login-chef-icon {
+            width: 50px;
+            height: 50px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: #FF6B35;
         }
         
         .login-header h1 {
             font-size: 2.2em;
-            margin-bottom: 10px;
+            margin: 0;
+            font-weight: bold;
+            letter-spacing: 2px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
         
@@ -228,34 +245,60 @@
             visibility: visible;
         }
         
-        /* メイン画面のスタイル（既存のものをそのまま使用） */
+        /* メイン画面のスタイル */
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             background: white;
             border-radius: 15px;
             box-shadow: 0 20px 40px rgba(0,0,0,0.1);
             overflow: hidden;
+            min-height: 90vh;
         }
         
         .header {
             background: linear-gradient(45deg, #FF6B35, #F7931E);
             color: white;
-            padding: 30px;
-            text-align: center;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             position: relative;
         }
         
-        .header h1 {
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .chef-icon {
+            width: 60px;
+            height: 60px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            color: #FF6B35;
+        }
+        
+        .logo-text {
             font-size: 2.5em;
-            margin-bottom: 10px;
+            font-weight: bold;
+            letter-spacing: 2px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
         
+        .header-right {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 10px;
+        }
+        
         .logout-btn {
-            position: absolute;
-            top: 20px;
-            right: 20px;
             padding: 8px 16px;
             background: rgba(255, 255, 255, 0.2);
             color: white;
@@ -271,9 +314,27 @@
             border-color: rgba(255, 255, 255, 0.5);
         }
         
+        .connection-status {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .status-connected {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-disconnected {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
         .stats {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(4, 1fr);
             gap: 20px;
             padding: 30px;
             background: #f8f9fa;
@@ -281,11 +342,12 @@
         
         .stat-card {
             background: white;
-            padding: 20px;
-            border-radius: 10px;
+            padding: 30px 20px;
+            border-radius: 15px;
             text-align: center;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
             transition: transform 0.3s ease;
+            position: relative;
         }
         
         .stat-card:hover {
@@ -293,9 +355,38 @@
         }
         
         .stat-number {
-            font-size: 2em;
+            font-size: 3em;
             font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .stat-label {
+            font-size: 1.1em;
+            color: #666;
+            font-weight: 500;
+        }
+        
+        .stat-card.total .stat-number {
+            color: #666;
+        }
+        
+        .stat-card.urgent .stat-number {
             color: #FF6B35;
+        }
+        
+        .stat-card.prep .stat-number {
+            color: #dc3545;
+        }
+        
+        .stat-card.schedule {
+            background: linear-gradient(45deg, #28a745, #20c997);
+            color: white;
+            cursor: pointer;
+        }
+        
+        .stat-card.schedule .stat-number {
+            color: white;
+            font-size: 2em;
         }
         
         .controls {
@@ -613,17 +704,62 @@
         }
         
         @media (max-width: 768px) {
-            .header h1 {
+            .header {
+                flex-direction: column;
+                gap: 15px;
+                padding: 20px;
+            }
+            
+            .header-left {
+                justify-content: center;
+            }
+            
+            .header-right {
+                align-items: center;
+            }
+            
+            .chef-icon {
+                width: 35px;
+                height: 35px;
+                font-size: 16px;
+            }
+            
+            .chef-icon img {
+                width: 28px;
+                height: 28px;
+            }
+            
+            .login-chef-icon {
+                width: 50px;
+                height: 50px;
+                margin-bottom: 6px;
+            }
+            
+            .login-chef-icon img {
+                width: 40px;
+                height: 40px;
+            }
+            
+            .logo-text {
                 font-size: 1.8em;
             }
             
-            .logout-btn {
-                position: static;
-                margin-top: 15px;
-                display: block;
-                width: fit-content;
-                margin-left: auto;
-                margin-right: auto;
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+                padding: 20px;
+            }
+            
+            .stat-card {
+                padding: 20px 15px;
+            }
+            
+            .stat-number {
+                font-size: 2.5em;
+            }
+            
+            .stat-label {
+                font-size: 0.9em;
             }
             
             .controls {
@@ -670,8 +806,10 @@
     <!-- ログイン画面 -->
     <div id="loginScreen" class="login-container">
         <div class="login-header">
-            <h1>🔥 神の手</h1>
-            <p>在庫管理システム</p>
+            <div class="login-chef-icon">
+                <img src="https://github.com/komatsu-matsuko/kaminote-inventory/blob/main/zaico1.png?raw=true" alt="Chef Icon" />
+            </div>
+            <h1>ZAICOPATH</h1>
         </div>
         <div class="login-form">
             <div class="error-message" id="errorMessage">
@@ -691,30 +829,34 @@
     <!-- メイン画面 -->
     <div id="mainScreen" class="container hidden">
         <div class="header">
-            <button class="logout-btn" onclick="logout()">ログアウト</button>
-            <h1>🔥 神の手 在庫管理システム</h1>
-            <p>廃棄ロス削減・効率的な在庫管理で利益アップ！</p>
-            <div style="margin-top: 10px;">
-                <span id="mainConnectionStatus" class="connection-status status-disconnected">Airtable: 未接続</span>
+            <div class="header-left">
+                <div class="chef-icon">
+                    <img src="https://github.com/komatsu-matsuko/kaminote-inventory/blob/main/zaico1.png?raw=true" alt="Chef Icon" />
+                </div>
+                <div class="logo-text">ZAICOPATH</div>
+            </div>
+            <div class="header-right">
+                <button class="logout-btn" onclick="logout()">ログアウト</button>
+                <span id="mainConnectionStatus" class="connection-status status-connected">Airtable: 接続済み</span>
             </div>
         </div>
         
         <div class="stats">
-            <div class="stat-card">
+            <div class="stat-card total">
                 <div class="stat-number" id="totalItems">0</div>
-                <div>総在庫数</div>
+                <div class="stat-label">総在庫数</div>
             </div>
-            <div class="stat-card">
-                <div class="stat-number" id="expiredItems">0</div>
-                <div>期限切れ</div>
-            </div>
-            <div class="stat-card">
+            <div class="stat-card urgent">
                 <div class="stat-number" id="urgentItems">0</div>
-                <div>24時間以内</div>
+                <div class="stat-label">賞味期限24時間以内</div>
             </div>
-            <div class="stat-card" style="background: linear-gradient(45deg, #28a745, #20c997); color: white; cursor: pointer;" onclick="showScheduleModal()">
-                <div style="font-size: 1.5em;">📅</div>
-                <div>仕込みスケジュール</div>
+            <div class="stat-card prep">
+                <div class="stat-number" id="prepItems">0</div>
+                <div class="stat-label">本日の仕込み</div>
+            </div>
+            <div class="stat-card schedule" onclick="showScheduleModal()">
+                <div style="font-size: 1.8em; margin-bottom: 10px;">📅</div>
+                <div class="stat-label">仕込みスケジュール</div>
             </div>
         </div>
         
@@ -879,6 +1021,18 @@
         <div class="modal-content" onclick="event.stopPropagation();">
             <h2 style="color: #28a745; margin-bottom: 20px;">📅 仕込みスケジュール管理</h2>
             
+            <!-- 現在の仕込みスケジュール -->
+            <div style="background: #fff3cd; border-radius: 10px; padding: 20px; margin-bottom: 20px;">
+                <h3 style="color: #856404; margin-bottom: 15px;">⏰ そろそろ仕込むリスト</h3>
+                <div id="upcomingSchedule"></div>
+            </div>
+
+            <!-- 全体スケジュール -->
+            <div style="background: #e7f3ff; border-radius: 10px; padding: 20px; margin-bottom: 20px;">
+                <h3 style="color: #004085; margin-bottom: 15px;">📋 仕込み予定一覧</h3>
+                <div id="fullSchedule"></div>
+            </div>
+
             <!-- 商品マスター管理 -->
             <div style="background: #f8f9fa; border-radius: 10px; padding: 20px; margin-bottom: 20px;">
                 <h3 style="color: #495057; margin-bottom: 15px;">🛠️ 商品マスター設定</h3>
@@ -893,18 +1047,6 @@
                     <button onclick="showDeletedProducts()" style="padding: 8px 12px; background: #17a2b8; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px;">♻️ 削除済み復元</button>
                 </div>
                 <div id="productMasterList" style="max-height: 200px; overflow-y: auto;"></div>
-            </div>
-
-            <!-- 現在の仕込みスケジュール -->
-            <div style="background: #fff3cd; border-radius: 10px; padding: 20px; margin-bottom: 20px;">
-                <h3 style="color: #856404; margin-bottom: 15px;">⏰ そろそろ仕込むリスト</h3>
-                <div id="upcomingSchedule"></div>
-            </div>
-
-            <!-- 全体スケジュール -->
-            <div style="background: #e7f3ff; border-radius: 10px; padding: 20px;">
-                <h3 style="color: #004085; margin-bottom: 15px;">📋 仕込み予定一覧</h3>
-                <div id="fullSchedule"></div>
             </div>
 
             <button class="btn btn-primary" onclick="closeScheduleModal()" style="margin-top: 20px;">閉じる</button>
@@ -1100,8 +1242,8 @@
                 
                 updateConnectionStatus(true);
                 loadData();
-                renderTable();
                 updateItemNameOptions();
+                renderTable();
                 startCountdownTimer();
 
                 console.log('ログイン完了 - セッション中データ保持（artifacts環境）');
@@ -1694,12 +1836,15 @@
             if (!isLoggedIn) return;
             
             const total = inventory.length;
-            const expired = inventory.filter(item => getTimeUntilExpiry(item.expiryDate).expired).length;
             const urgent = inventory.filter(item => getTimeUntilExpiry(item.expiryDate).urgent).length;
+            
+            // 本日の仕込み数を計算
+            const schedules = calculatePrepSchedule();
+            const todayPrep = schedules.filter(s => s.urgencyLevel <= 2).length; // 在庫なし + 本日仕込み
 
             document.getElementById('totalItems').textContent = total;
-            document.getElementById('expiredItems').textContent = expired;
             document.getElementById('urgentItems').textContent = urgent;
+            document.getElementById('prepItems').textContent = todayPrep;
         }
 
         function showAddForm() {
