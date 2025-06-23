@@ -1735,14 +1735,14 @@
                 
                 const data = {
                     fields: {
-                        name: item.name || '',
+                        Name: item.name || '',  // 'name' を 'Name' に変更
                         quantity: item.quantity || '',
                         prepDate: prepDateISO,
                         expiryDate: expiryDateISO,
                         storageType: item.storageType || '冷蔵',
                         location: item.location || '',
                         staff: item.staff || '',
-                        notes: item.notes || ''
+                        Notes: item.notes || ''  // 'notes' を 'Notes' に変更
                     }
                 };
 
@@ -1842,14 +1842,14 @@
                 const data = await response.json();
                 
                 inventory = data.records.map(record => ({
-                    name: record.fields.name || '',
+                    name: record.fields.Name || record.fields.name || '',  // 両方のパターンに対応
                     quantity: record.fields.quantity || '',
                     prepDate: record.fields.prepDate || '',
                     expiryDate: record.fields.expiryDate || '',
                     storageType: record.fields.storageType || '冷蔵',
                     location: record.fields.location || '',
                     staff: record.fields.staff || '',
-                    notes: record.fields.notes || '',
+                    notes: record.fields.Notes || record.fields.notes || '',  // 両方のパターンに対応
                     airtableId: record.id
                 })).filter(item => item.name && item.expiryDate);
 
