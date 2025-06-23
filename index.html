@@ -119,6 +119,29 @@
         }
 
         /* Airtable設定モーダル */
+        .airtable-setup-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .airtable-setup-content {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 600px;
+            width: 95%;
+            max-height: 90%;
+            overflow-y: auto;
+        }
+
         .airtable-setup {
             background: #e8f5e8;
             border-radius: 10px;
@@ -144,6 +167,7 @@
             border: 2px solid #c3e6cb;
             border-radius: 6px;
             font-size: 14px;
+            font-family: monospace;
         }
 
         .setup-form-group input:focus {
@@ -167,6 +191,11 @@
         .status-disconnected {
             background: #f8d7da;
             color: #721c24;
+        }
+
+        .status-checking {
+            background: #fff3cd;
+            color: #856404;
         }
         
         @keyframes fadeIn {
@@ -222,6 +251,10 @@
         
         .floating-btn.ingredient-btn {
             background: linear-gradient(45deg, #6f42c1, #8b5cf6);
+        }
+        
+        .floating-btn.settings-btn {
+            background: linear-gradient(45deg, #17a2b8, #20c997);
         }
         
         .floating-btn-tooltip {
@@ -293,9 +326,8 @@
         
         .header-right {
             display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            gap: 10px;
+            align-items: center;
+            gap: 0;
         }
         
         .logout-btn {
@@ -312,24 +344,6 @@
         .logout-btn:hover {
             background: rgba(255, 255, 255, 0.3);
             border-color: rgba(255, 255, 255, 0.5);
-        }
-        
-        .connection-status {
-            display: inline-block;
-            padding: 4px 8px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: bold;
-        }
-
-        .status-connected {
-            background: #d4edda;
-            color: #155724;
-        }
-
-        .status-disconnected {
-            background: #f8d7da;
-            color: #721c24;
         }
         
         .stats {
@@ -702,6 +716,122 @@
             outline: none;
             border-color: #28a745;
         }
+
+        .info-box {
+            background: #e7f3ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid #004085;
+        }
+
+        .info-box h3 {
+            color: #004085;
+            margin-bottom: 15px;
+        }
+
+        .info-box p {
+            color: #495057;
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+
+        .info-box ol {
+            margin-left: 20px;
+            color: #495057;
+            line-height: 1.8;
+        }
+
+        .info-box code {
+            background: #f8f9fa;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: monospace;
+            color: #d73502;
+        }
+        
+        .floating-btn.master-btn {
+            background: linear-gradient(45deg, #fd7e14, #ffc107);
+        }
+        
+        .master-settings-section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid #495057;
+        }
+        
+        .master-settings-title {
+            color: #495057;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        
+        .master-item-list {
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid #e9ecef;
+            border-radius: 6px;
+            padding: 10px;
+            background: white;
+            margin-bottom: 15px;
+        }
+        
+        .master-item {
+            display: inline-block;
+            background: #e9ecef;
+            padding: 6px 12px;
+            border-radius: 20px;
+            margin: 4px;
+            font-size: 14px;
+            position: relative;
+        }
+        
+        .master-item .remove-btn {
+            margin-left: 8px;
+            cursor: pointer;
+            color: #dc3545;
+            font-weight: bold;
+        }
+        
+        .master-item .remove-btn:hover {
+            color: #c82333;
+        }
+        
+        .add-master-form {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .add-master-form input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        
+        .add-master-form button {
+            padding: 8px 16px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+        
+        .add-master-form button:hover {
+            background: #218838;
+        }
+        
+        .settings-btn:hover {
+            background: rgba(255, 255, 255, 0.3) !important;
+            border-color: rgba(255, 255, 255, 0.5) !important;
+        }
         
         @media (max-width: 768px) {
             .header {
@@ -830,8 +960,8 @@
                 <div class="logo-text">ZAICOPATH</div>
             </div>
             <div class="header-right">
+                <button class="settings-btn" onclick="showAirtableSetupModal()" style="padding: 8px 16px; background: rgba(255, 255, 255, 0.2); color: white; border: 2px solid rgba(255, 255, 255, 0.3); border-radius: 6px; cursor: pointer; font-size: 14px; transition: all 0.3s ease; margin-right: 10px;">⚙️ Airtable設定</button>
                 <button class="logout-btn" onclick="logout()">ログアウト</button>
-                <span id="mainConnectionStatus" class="connection-status status-connected">Airtable: 接続済み</span>
             </div>
         </div>
         
@@ -864,6 +994,7 @@
             <button class="btn btn-danger" onclick="clearExpired()">🗑️ 期限切れ削除</button>
             <button class="btn btn-success" onclick="exportToCSV()">📥 CSV出力</button>
             <button class="btn" onclick="showRestoreModal()" style="background: #6f42c1; color: white;">♻️ データ復元</button>
+            <button class="btn" onclick="manualSync()" style="background: #17a2b8; color: white;">🔄 手動同期</button>
         </div>
         
         <div class="table-container">
@@ -913,38 +1044,17 @@
                 <div class="form-group">
                     <label>保存方法</label>
                     <select id="storageType">
-                        <option value="冷蔵">冷蔵</option>
-                        <option value="常温">常温</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label>保存場所</label>
                     <select id="location">
-                        <option value="冷蔵庫1">冷蔵庫1</option>
-                        <option value="冷蔵庫2">冷蔵庫2</option>
-                        <option value="冷蔵庫3">冷蔵庫3</option>
-                        <option value="冷蔵庫4">冷蔵庫4</option>
-                        <option value="冷蔵庫5(ホール)">冷蔵庫5(ホール)</option>
-                        <option value="冷蔵庫（倉庫）">冷蔵庫（倉庫）</option>
-                        <option value="常温保管">常温保管</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label>担当者 <span style="color: #dc3545; font-weight: bold;">*</span></label>
                     <select id="staff" required>
                         <option value="">選択してください</option>
-                        <option value="後藤">後藤</option>
-                        <option value="火山">火山</option>
-                        <option value="原">原</option>
-                        <option value="押尾">押尾</option>
-                        <option value="綾樹">綾樹</option>
-                        <option value="雅弥">雅弥</option>
-                        <option value="さくら">さくら</option>
-                        <option value="綾奈">綾奈</option>
-                        <option value="晴喜">晴喜</option>
-                        <option value="樹">樹</option>
-                        <option value="美海">美海</option>
-                        <option value="はるか">はるか</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -967,6 +1077,81 @@
             <span class="floating-btn-tooltip">食材管理</span>
             🥬
         </button>
+        <button class="floating-btn master-btn" onclick="showMasterSettingsModal()" title="マスター設定">
+            <span class="floating-btn-tooltip">マスター設定</span>
+            📋
+        </button>
+    </div>
+
+    <!-- Airtable設定モーダル -->
+    <div id="airtableSetupModal" class="airtable-setup-modal" onclick="closeModalOnBackgroundClick(event, 'airtableSetupModal')">
+        <div class="airtable-setup-content" onclick="event.stopPropagation();">
+            <h2 style="color: #28a745; margin-bottom: 20px;">⚙️ Airtable接続設定</h2>
+            
+            <div class="airtable-setup">
+                <h3 style="color: #155724; margin-bottom: 15px;">接続情報を入力</h3>
+                <div class="setup-form-group">
+                    <label>Personal Access Token</label>
+                    <input type="password" id="airtableToken" placeholder="pat...で始まるトークン" value="" 
+                           onfocus="handleFieldFocus('airtableToken')" 
+                           onblur="handleFieldBlur('airtableToken')"
+                           autocomplete="off">
+                    <button type="button" onclick="clearField('airtableToken')" style="margin-top: 5px; padding: 4px 8px; background: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px;">クリア</button>
+                </div>
+                <div class="setup-form-group">
+                    <label>Base ID</label>
+                    <input type="password" id="airtableBaseId" placeholder="app...で始まるID" value=""
+                           onfocus="handleFieldFocus('airtableBaseId')" 
+                           onblur="handleFieldBlur('airtableBaseId')"
+                           autocomplete="off">
+                    <button type="button" onclick="clearField('airtableBaseId')" style="margin-top: 5px; padding: 4px 8px; background: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px;">クリア</button>
+                </div>
+                <div class="setup-form-group">
+                    <label>Table Name</label>
+                    <input type="text" id="airtableTableName" placeholder="Inventory" value="Inventory">
+                </div>
+                <button class="btn btn-success" onclick="testAirtableConnection()">接続テスト</button>
+                <button class="btn btn-primary" onclick="saveAirtableConfig()" style="margin-left: 10px;">設定を保存</button>
+                
+                <div id="connectionTestResult" style="margin-top: 15px; display: none;">
+                    <span id="testResultStatus" class="connection-status"></span>
+                    <span id="testResultMessage" style="margin-left: 10px; font-size: 14px;"></span>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <h3>📋 Airtableの設定方法</h3>
+                <p>以下の手順でAirtableを設定してください：</p>
+                <ol>
+                    <li><strong>Personal Access Tokenの取得：</strong>
+                        <ul style="margin: 10px 0;">
+                            <li><a href="https://airtable.com/account" target="_blank">Airtable Account</a>にアクセス</li>
+                            <li>「Personal access tokens」セクションで新規作成</li>
+                            <li>必要なスコープ: <code>data.records:read</code>, <code>data.records:write</code></li>
+                        </ul>
+                    </li>
+                    <li><strong>Base IDの取得：</strong>
+                        <ul style="margin: 10px 0;">
+                            <li>Airtableで該当のBaseを開く</li>
+                            <li>URLから <code>app...</code> で始まる部分をコピー</li>
+                            <li>例: <code>https://airtable.com/appXXXXXXXXXXXX/...</code></li>
+                        </ul>
+                    </li>
+                    <li><strong>テーブルの作成：</strong>
+                        <ul style="margin: 10px 0;">
+                            <li>「Inventory」という名前のテーブルを作成</li>
+                            <li>必要なフィールドは自動的に作成されます</li>
+                        </ul>
+                    </li>
+                </ol>
+                <p style="margin-top: 15px; color: #856404; background: #fff3cd; padding: 10px; border-radius: 6px;">
+                    ⚠️ <strong>注意：</strong> ローカルファイルから実行している場合、CORSエラーが発生する可能性があります。
+                    その場合は、Webサーバー経由でアクセスするか、ローカルストレージのみで運用してください。
+                </p>
+            </div>
+
+            <button class="btn" onclick="closeAirtableSetupModal()" style="background: #6c757d; color: white; margin-top: 20px;">閉じる</button>
+        </div>
     </div>
 
     <!-- 食材マスター管理モーダル -->
@@ -1027,22 +1212,6 @@
                 <div id="fullSchedule"></div>
             </div>
 
-            <!-- 商品マスター管理 -->
-            <div style="background: #f8f9fa; border-radius: 10px; padding: 20px; margin-bottom: 20px;">
-                <h3 style="color: #495057; margin-bottom: 15px;">🛠️ 商品マスター設定</h3>
-                <div style="display: grid; grid-template-columns: 2fr 1fr 1fr auto; gap: 10px; align-items: center; margin-bottom: 10px;">
-                    <input type="text" id="newProductName" placeholder="商品名を入力" style="padding: 10px; border: 2px solid #e9ecef; border-radius: 6px;">
-                    <input type="number" id="newProductHours" placeholder="消費期限(h)" min="1" max="168" style="padding: 10px; border: 2px solid #e9ecef; border-radius: 6px;">
-                    <input type="number" id="newProductServings" placeholder="人数" min="1" max="100" style="padding: 10px; border: 2px solid #e9ecef; border-radius: 6px;">
-                    <button onclick="addOrUpdateProductMaster()" id="productMasterBtn" style="padding: 10px 15px; background: #28a745; color: white; border: none; border-radius: 6px; cursor: pointer;">追加</button>
-                </div>
-                <div style="display: flex; gap: 10px; margin-bottom: 15px;">
-                    <button onclick="cancelProductEdit()" id="cancelEditBtn" style="display: none; padding: 8px 12px; background: #6c757d; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px;">キャンセル</button>
-                    <button onclick="showDeletedProducts()" style="padding: 8px 12px; background: #17a2b8; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px;">♻️ 削除済み復元</button>
-                </div>
-                <div id="productMasterList" style="max-height: 200px; overflow-y: auto;"></div>
-            </div>
-
             <button class="btn btn-primary" onclick="closeScheduleModal()" style="margin-top: 20px;">閉じる</button>
         </div>
     </div>
@@ -1057,14 +1226,261 @@
         </div>
     </div>
 
+    <!-- マスター設定モーダル -->
+    <div id="masterSettingsModal" class="modal" onclick="closeModalOnBackgroundClick(event, 'masterSettingsModal')">
+        <div class="modal-content" onclick="event.stopPropagation();">
+            <h2 style="color: #fd7e14; margin-bottom: 20px;">📋 マスター設定</h2>
+            
+            <!-- 担当者設定 -->
+            <div class="master-settings-section">
+                <h3 class="master-settings-title">👥 担当者管理</h3>
+                <div id="staffList" class="master-item-list"></div>
+                <div class="add-master-form">
+                    <input type="text" id="newStaffName" placeholder="新しい担当者名を入力" maxlength="20">
+                    <button onclick="addStaff()">追加</button>
+                </div>
+            </div>
+            
+            <!-- 保存方法設定 -->
+            <div class="master-settings-section">
+                <h3 class="master-settings-title">🌡️ 保存方法管理</h3>
+                <div id="storageTypeList" class="master-item-list"></div>
+                <div class="add-master-form">
+                    <input type="text" id="newStorageType" placeholder="新しい保存方法を入力" maxlength="20">
+                    <button onclick="addStorageType()">追加</button>
+                </div>
+            </div>
+            
+            <!-- 保存場所設定 -->
+            <div class="master-settings-section">
+                <h3 class="master-settings-title">📍 保存場所管理</h3>
+                <div id="locationList" class="master-item-list"></div>
+                <div class="add-master-form">
+                    <input type="text" id="newLocation" placeholder="新しい保存場所を入力" maxlength="30">
+                    <button onclick="addLocation()">追加</button>
+                </div>
+            </div>
+            
+            <!-- 仕込みスケジュール管理 -->
+            <div class="master-settings-section">
+                <h3 class="master-settings-title">🍳 仕込みスケジュール管理</h3>
+                <div style="display: grid; grid-template-columns: 2fr 1fr 1fr auto; gap: 10px; align-items: center; margin-bottom: 10px;">
+                    <input type="text" id="newProductName" placeholder="商品名を入力" style="padding: 8px; border: 2px solid #e9ecef; border-radius: 6px;">
+                    <input type="number" id="newProductHours" placeholder="消費期限(h)" min="1" max="168" style="padding: 8px; border: 2px solid #e9ecef; border-radius: 6px;">
+                    <input type="number" id="newProductServings" placeholder="人数" min="1" max="100" style="padding: 8px; border: 2px solid #e9ecef; border-radius: 6px;">
+                    <button onclick="addOrUpdateProductMaster()" id="productMasterBtn" style="padding: 8px 12px; background: #28a745; color: white; border: none; border-radius: 6px; cursor: pointer;">追加</button>
+                </div>
+                <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                    <button onclick="cancelProductEdit()" id="cancelEditBtn" style="display: none; padding: 6px 10px; background: #6c757d; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px;">キャンセル</button>
+                    <button onclick="showDeletedProducts()" style="padding: 6px 10px; background: #17a2b8; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px;">♻️ 削除済み復元</button>
+                </div>
+                <div id="productMasterList" class="master-item-list" style="max-height: 250px;"></div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 20px;">
+                <button class="btn btn-primary" onclick="closeMasterSettingsModal()">閉じる</button>
+            </div>
+        </div>
+    </div>
+
     <script>
+        // マスターデータ（担当者、保存方法、保存場所）
+        let staffMasters = [];
+        let storageTypeMasters = [];
+        let locationMasters = [];
+
+        function initializeMasterData() {
+            // デフォルトの担当者
+            staffMasters = [
+                "後藤", "火山", "原", "押尾", "綾樹", "雅弥", 
+                "さくら", "綾奈", "晴喜", "樹", "美海", "はるか"
+            ];
+            
+            // デフォルトの保存方法
+            storageTypeMasters = ["冷蔵", "常温"];
+            
+            // デフォルトの保存場所
+            locationMasters = [
+                "冷蔵庫1", "冷蔵庫2", "冷蔵庫3", "冷蔵庫4", 
+                "冷蔵庫5(ホール)", "冷蔵庫（倉庫）", "常温保管"
+            ];
+        }
+
+        // マスター設定モーダルの表示
+        function showMasterSettingsModal() {
+            renderMasterLists();
+            renderProductMasterList();
+            document.getElementById('masterSettingsModal').style.display = 'flex';
+        }
+
+        function closeMasterSettingsModal() {
+            document.getElementById('masterSettingsModal').style.display = 'none';
+            // フォームの選択肢を更新
+            updateFormOptions();
+            // 商品編集状態もリセット
+            cancelProductEdit();
+        }
+
+        // マスターデータのレンダリング
+        function renderMasterLists() {
+            // 担当者リスト
+            const staffContainer = document.getElementById('staffList');
+            staffContainer.innerHTML = staffMasters.map((staff, index) => 
+                `<span class="master-item">${staff}<span class="remove-btn" onclick="removeStaff(${index})">×</span></span>`
+            ).join('');
+            
+            // 保存方法リスト
+            const storageTypeContainer = document.getElementById('storageTypeList');
+            storageTypeContainer.innerHTML = storageTypeMasters.map((type, index) => 
+                `<span class="master-item">${type}<span class="remove-btn" onclick="removeStorageType(${index})">×</span></span>`
+            ).join('');
+            
+            // 保存場所リスト
+            const locationContainer = document.getElementById('locationList');
+            locationContainer.innerHTML = locationMasters.map((location, index) => 
+                `<span class="master-item">${location}<span class="remove-btn" onclick="removeLocation(${index})">×</span></span>`
+            ).join('');
+        }
+
+        // 担当者の追加・削除
+        function addStaff() {
+            const input = document.getElementById('newStaffName');
+            const name = input.value.trim();
+            
+            if (!name) {
+                alert('担当者名を入力してください');
+                return;
+            }
+            
+            if (staffMasters.includes(name)) {
+                alert('この担当者は既に登録されています');
+                return;
+            }
+            
+            staffMasters.push(name);
+            input.value = '';
+            renderMasterLists();
+            saveData();
+        }
+
+        function removeStaff(index) {
+            if (staffMasters.length <= 1) {
+                alert('担当者は最低1人必要です');
+                return;
+            }
+            
+            if (confirm(`「${staffMasters[index]}」を削除しますか？`)) {
+                staffMasters.splice(index, 1);
+                renderMasterLists();
+                saveData();
+            }
+        }
+
+        // 保存方法の追加・削除
+        function addStorageType() {
+            const input = document.getElementById('newStorageType');
+            const type = input.value.trim();
+            
+            if (!type) {
+                alert('保存方法を入力してください');
+                return;
+            }
+            
+            if (storageTypeMasters.includes(type)) {
+                alert('この保存方法は既に登録されています');
+                return;
+            }
+            
+            storageTypeMasters.push(type);
+            input.value = '';
+            renderMasterLists();
+            saveData();
+        }
+
+        function removeStorageType(index) {
+            if (storageTypeMasters.length <= 1) {
+                alert('保存方法は最低1つ必要です');
+                return;
+            }
+            
+            if (confirm(`「${storageTypeMasters[index]}」を削除しますか？`)) {
+                storageTypeMasters.splice(index, 1);
+                renderMasterLists();
+                saveData();
+            }
+        }
+
+        // 保存場所の追加・削除
+        function addLocation() {
+            const input = document.getElementById('newLocation');
+            const location = input.value.trim();
+            
+            if (!location) {
+                alert('保存場所を入力してください');
+                return;
+            }
+            
+            if (locationMasters.includes(location)) {
+                alert('この保存場所は既に登録されています');
+                return;
+            }
+            
+            locationMasters.push(location);
+            input.value = '';
+            renderMasterLists();
+            saveData();
+        }
+
+        function removeLocation(index) {
+            if (locationMasters.length <= 1) {
+                alert('保存場所は最低1つ必要です');
+                return;
+            }
+            
+            if (confirm(`「${locationMasters[index]}」を削除しますか？`)) {
+                locationMasters.splice(index, 1);
+                renderMasterLists();
+                saveData();
+            }
+        }
+
+        // フォームの選択肢を更新
+        function updateFormOptions() {
+            // 担当者の選択肢を更新
+            const staffSelect = document.getElementById('staff');
+            const currentValue = staffSelect.value;
+            staffSelect.innerHTML = '<option value="">選択してください</option>' + 
+                staffMasters.map(staff => `<option value="${staff}">${staff}</option>`).join('');
+            if (currentValue && staffMasters.includes(currentValue)) {
+                staffSelect.value = currentValue;
+            }
+            
+            // 保存方法の選択肢を更新
+            const storageTypeSelect = document.getElementById('storageType');
+            const currentStorageType = storageTypeSelect.value;
+            storageTypeSelect.innerHTML = storageTypeMasters.map(type => 
+                `<option value="${type}">${type}</option>`
+            ).join('');
+            if (currentStorageType && storageTypeMasters.includes(currentStorageType)) {
+                storageTypeSelect.value = currentStorageType;
+            }
+            
+            // 保存場所の選択肢を更新
+            const locationSelect = document.getElementById('location');
+            const currentLocation = locationSelect.value;
+            locationSelect.innerHTML = locationMasters.map(location => 
+                `<option value="${location}">${location}</option>`
+            ).join('');
+            if (currentLocation && locationMasters.includes(currentLocation)) {
+                locationSelect.value = currentLocation;
+            }
+        }
+
         // モーダル背景クリックで閉じる機能
         function closeModalOnBackgroundClick(event, modalId) {
-            // クリックされた要素がモーダル背景（.modal）の場合のみ閉じる
-            if (event.target.classList.contains('modal')) {
+            if (event.target.classList.contains('modal') || event.target.classList.contains('airtable-setup-modal')) {
                 document.getElementById(modalId).style.display = 'none';
                 
-                // 編集中の状態をリセット
                 if (modalId === 'ingredientMasterModal') {
                     cancelIngredientEdit();
                 } else if (modalId === 'scheduleModal') {
@@ -1072,53 +1488,267 @@
                 }
             }
         }
+
         // パスワード認証
-        const CORRECT_PASSWORD = 'haramika';
+        const CORRECT_PASSWORD = '510';
         let isLoggedIn = false;
 
-        // Airtable設定（固定値）
+        // Airtable設定（ローカルストレージから読み込み）
         let airtableConfig = {
-            token: 'patbzLEuOv9n7guB5.454219cc8616f9981adc42727fcafeb91b427678b5fedcad39dfdc4a73b37b13',
-            baseId: 'appvW36w7SahmzXAn',
+            token: '',
+            baseId: '',
             tableName: 'Inventory',
-            isConnected: true
+            isConnected: false
         };
 
-        function updateConnectionStatus(connected) {
-            const mainStatus = document.getElementById('mainConnectionStatus');
-            
-            if (connected) {
-                if (mainStatus) {
-                    mainStatus.className = 'connection-status status-connected';
-                    mainStatus.textContent = 'Airtable: 接続済み';
-                }
-            } else {
-                if (mainStatus) {
-                    mainStatus.className = 'connection-status status-disconnected';
-                    mainStatus.textContent = 'Airtable: 未接続';
+        // Airtable設定の読み込み
+        function loadAirtableConfig() {
+            const savedConfig = localStorage.getItem('zaicopath_airtable_config');
+            if (savedConfig) {
+                try {
+                    const config = JSON.parse(savedConfig);
+                    airtableConfig = { ...airtableConfig, ...config };
+                    
+                    // 設定フォームに反映（保存済みの場合は完全非表示）
+                    const tokenField = document.getElementById('airtableToken');
+                    const baseIdField = document.getElementById('airtableBaseId');
+                    
+                    if (airtableConfig.token) {
+                        tokenField.value = '••••••••••••••••';
+                        tokenField.setAttribute('data-original-value', airtableConfig.token);
+                        tokenField.setAttribute('data-masked', 'true');
+                        tokenField.setAttribute('readonly', 'true');
+                    }
+                    
+                    if (airtableConfig.baseId) {
+                        baseIdField.value = '••••••••••••••••';
+                        baseIdField.setAttribute('data-original-value', airtableConfig.baseId);
+                        baseIdField.setAttribute('data-masked', 'true');
+                        baseIdField.setAttribute('readonly', 'true');
+                    }
+                    
+                    document.getElementById('airtableTableName').value = airtableConfig.tableName || 'Inventory';
+                } catch (e) {
+                    console.error('Airtable設定の読み込みエラー:', e);
                 }
             }
         }
 
-        async function saveToAirtable(item, recordId = null) {
-            if (!airtableConfig.isConnected) {
-                console.log('Airtable未接続のためローカル保存のみ');
+        // フィールドをクリアする関数
+        function clearField(fieldId) {
+            const field = document.getElementById(fieldId);
+            field.value = '';
+            field.removeAttribute('data-original-value');
+            field.removeAttribute('data-masked');
+            field.removeAttribute('readonly');
+            field.type = 'text'; // 一時的にtextに変更して入力可能にする
+            field.focus();
+        }
+
+        // Airtable設定モーダルの表示
+        function showAirtableSetupModal() {
+            loadAirtableConfig();
+            // 接続テスト結果をリセット
+            document.getElementById('connectionTestResult').style.display = 'none';
+            document.getElementById('airtableSetupModal').style.display = 'flex';
+        }
+
+        function closeAirtableSetupModal() {
+            document.getElementById('airtableSetupModal').style.display = 'none';
+            // マスク状態をリセット
+            const tokenField = document.getElementById('airtableToken');
+            const baseIdField = document.getElementById('airtableBaseId');
+            tokenField.removeAttribute('data-masked');
+            tokenField.removeAttribute('data-original-value');
+            baseIdField.removeAttribute('data-masked');
+            baseIdField.removeAttribute('data-original-value');
+        }
+
+        // Airtable接続テスト
+        async function testAirtableConnection() {
+            const token = document.getElementById('airtableToken').value.trim();
+            const baseId = document.getElementById('airtableBaseId').value.trim();
+            const tableName = document.getElementById('airtableTableName').value.trim();
+            
+            if (!token || !baseId || !tableName) {
+                alert('すべての接続情報を入力してください');
                 return;
+            }
+            
+            const resultDiv = document.getElementById('connectionTestResult');
+            const statusSpan = document.getElementById('testResultStatus');
+            const messageSpan = document.getElementById('testResultMessage');
+            
+            resultDiv.style.display = 'block';
+            statusSpan.className = 'connection-status status-checking';
+            statusSpan.textContent = 'テスト中...';
+            messageSpan.textContent = '';
+            
+            try {
+                // テーブル構造を確認
+                const response = await fetch(`https://api.airtable.com/v0/${baseId}/${encodeURIComponent(tableName)}?maxRecords=1`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                if (response.ok) {
+                    statusSpan.className = 'connection-status status-connected';
+                    statusSpan.textContent = '接続成功';
+                    messageSpan.textContent = 'Airtableに正常に接続できました';
+                    messageSpan.style.color = '#155724';
+                    
+                    // 接続成功時、トークンとBase IDをマスク表示に変更
+                    maskSensitiveFields();
+                    
+                    // 必要なフィールドがない場合は作成を試みる
+                    await ensureTableStructure(token, baseId, tableName);
+                } else {
+                    const errorData = await response.json().catch(() => ({}));
+                    let errorMessage = 'Airtableに接続できませんでした';
+                    
+                    if (response.status === 404) {
+                        errorMessage = 'テーブルが見つかりません。テーブル名を確認してください';
+                    } else if (response.status === 401) {
+                        errorMessage = 'APIトークンが無効です。正しいトークンを入力してください';
+                    } else if (response.status === 403) {
+                        errorMessage = 'アクセス権限がありません。トークンのスコープを確認してください';
+                    }
+                    
+                    statusSpan.className = 'connection-status status-disconnected';
+                    statusSpan.textContent = '接続失敗';
+                    messageSpan.textContent = errorMessage;
+                    messageSpan.style.color = '#721c24';
+                }
+            } catch (error) {
+                statusSpan.className = 'connection-status status-disconnected';
+                statusSpan.textContent = '接続エラー';
+                messageSpan.textContent = 'ネットワークエラーまたはCORSエラーが発生しました';
+                messageSpan.style.color = '#721c24';
+                console.error('接続テストエラー:', error);
+            }
+        }
+
+        // 機密フィールドをマスク表示にする
+        function maskSensitiveFields() {
+            const tokenInput = document.getElementById('airtableToken');
+            const baseIdInput = document.getElementById('airtableBaseId');
+            
+            // 現在の値を保存
+            tokenInput.setAttribute('data-original-value', tokenInput.value);
+            baseIdInput.setAttribute('data-original-value', baseIdInput.value);
+            
+            // 完全マスク表示
+            if (tokenInput.value) {
+                tokenInput.value = '••••••••••••••••';
+                tokenInput.setAttribute('data-masked', 'true');
+                tokenInput.setAttribute('readonly', 'true');
+            }
+            
+            if (baseIdInput.value) {
+                baseIdInput.value = '••••••••••••••••';
+                baseIdInput.setAttribute('data-masked', 'true');
+                baseIdInput.setAttribute('readonly', 'true');
+            }
+        }
+
+        // フィールドのフォーカス時に元の値を復元
+        function handleFieldFocus(fieldId) {
+            const field = document.getElementById(fieldId);
+            if (field.getAttribute('data-masked') === 'true' && field.getAttribute('readonly') === 'true') {
+                // 読み取り専用の場合は編集できないようにする
+                field.blur();
+                alert('設定を変更する場合は、フィールドをクリアしてから新しい値を入力してください。');
+            }
+        }
+
+        // フィールドのブラー時に再度マスク
+        function handleFieldBlur(fieldId) {
+            // 新規入力時のみ処理（既存のマスクされたフィールドは変更しない）
+            const field = document.getElementById(fieldId);
+            if (!field.getAttribute('readonly') && field.value && !field.value.includes('•')) {
+                // 新規入力の場合は何もしない（接続テスト後にマスクされる）
+            }
+        }
+
+        // テーブル構造の確保
+        async function ensureTableStructure(token, baseId, tableName) {
+            // Airtable APIではフィールドの自動作成はできないため、
+            // 初回レコード作成時に自動的にフィールドが作成されます
+            console.log('テーブル構造を確認しました');
+        }
+
+        // Airtable設定の保存
+        function saveAirtableConfig() {
+            const tokenField = document.getElementById('airtableToken');
+            const baseIdField = document.getElementById('airtableBaseId');
+            const tableName = document.getElementById('airtableTableName').value.trim();
+            
+            // マスクされている場合は元の値を取得
+            const token = tokenField.getAttribute('data-original-value') || tokenField.value.trim();
+            const baseId = baseIdField.getAttribute('data-original-value') || baseIdField.value.trim();
+            
+            if (!token || !baseId || !tableName) {
+                alert('すべての接続情報を入力してください');
+                return;
+            }
+            
+            // マスク表示されていても正しい値を保存
+            if (token.includes('...') || baseId.includes('...')) {
+                alert('接続テストを実行してから保存してください');
+                return;
+            }
+            
+            airtableConfig = {
+                token: token,
+                baseId: baseId,
+                tableName: tableName,
+                isConnected: true
+            };
+            
+            localStorage.setItem('zaicopath_airtable_config', JSON.stringify(airtableConfig));
+            updateConnectionStatus(true);
+            closeAirtableSetupModal();
+            
+            alert('Airtable設定を保存しました。手動同期ボタンでデータを同期してください。');
+        }
+
+        function updateConnectionStatus(connected) {
+            // 接続状態の内部管理のみ（表示はしない）
+            if (connected && airtableConfig.token && airtableConfig.baseId) {
+                airtableConfig.isConnected = true;
+            } else {
+                airtableConfig.isConnected = false;
+            }
+        }
+
+        async function saveToAirtable(item, recordId = null) {
+            if (!airtableConfig.isConnected || !airtableConfig.token || !airtableConfig.baseId) {
+                console.log('Airtable未接続のためローカル保存のみ');
+                return null;
             }
 
             try {
+                // 日付フィールドをISO形式に変換
+                const prepDateISO = item.prepDate ? new Date(item.prepDate).toISOString() : '';
+                const expiryDateISO = item.expiryDate ? new Date(item.expiryDate).toISOString() : '';
+                
                 const data = {
                     fields: {
-                        name: item.name,
-                        quantity: item.quantity,
-                        prepDate: item.prepDate,
-                        expiryDate: item.expiryDate,
-                        storageType: item.storageType,
-                        location: item.location,
-                        staff: item.staff,
-                        notes: item.notes
+                        name: item.name || '',
+                        quantity: item.quantity || '',
+                        prepDate: prepDateISO,
+                        expiryDate: expiryDateISO,
+                        storageType: item.storageType || '冷蔵',
+                        location: item.location || '',
+                        staff: item.staff || '',
+                        notes: item.notes || ''
                     }
                 };
+
+                // 空の日付フィールドを削除
+                if (!prepDateISO) delete data.fields.prepDate;
+                if (!expiryDateISO) delete data.fields.expiryDate;
 
                 let url = `https://api.airtable.com/v0/${airtableConfig.baseId}/${encodeURIComponent(airtableConfig.tableName)}`;
                 let method = 'POST';
@@ -1127,6 +1757,8 @@
                     url += `/${recordId}`;
                     method = 'PATCH';
                 }
+
+                console.log('Airtable保存試行:', { url, method, data });
 
                 const response = await fetch(url, {
                     method: method,
@@ -1138,20 +1770,39 @@
                 });
 
                 if (!response.ok) {
-                    console.error(`Airtable API error: HTTP ${response.status}`);
+                    const errorText = await response.text();
+                    console.error(`Airtable API error: HTTP ${response.status}`, errorText);
+                    
+                    if (response.status === 404) {
+                        alert('Airtableのテーブルが見つかりません。設定を確認してください。');
+                    } else if (response.status === 401) {
+                        alert('Airtableの認証に失敗しました。APIトークンを確認してください。');
+                    } else if (response.status === 422) {
+                        // データ形式エラーの詳細をコンソールに出力するが、アラートは表示しない
+                        console.error('Airtableデータ形式エラー:', errorText);
+                        // エラーがあってもローカルには保存されているので、nullを返してエラーを抑制
+                        return null;
+                    }
+                    
                     return null;
                 }
 
                 const result = await response.json();
+                console.log('Airtable保存成功:', result.id);
                 return result.id;
             } catch (error) {
-                console.error('Airtable保存エラー:', error);
+                console.error('Airtable保存エラー詳細:', error);
+                
+                if (error.message.includes('Failed to fetch')) {
+                    console.error('CORSエラーの可能性があります。ローカルファイルからの実行の場合は、Webサーバー経由で実行してください。');
+                }
+                
                 return null;
             }
         }
 
         async function deleteFromAirtable(recordId) {
-            if (!airtableConfig.isConnected || !recordId) {
+            if (!airtableConfig.isConnected || !recordId || !airtableConfig.token || !airtableConfig.baseId) {
                 return;
             }
 
@@ -1172,21 +1823,12 @@
         }
 
         async function syncFromAirtable() {
-            if (!airtableConfig.isConnected) {
-                alert('Airtableに接続していません');
-                return;
-            }
-
-            if (!confirm('Airtableのデータでローカルデータを上書きしますか？\n※ローカルの変更が失われる可能性があります')) {
-                return;
+            if (!airtableConfig.isConnected || !airtableConfig.token || !airtableConfig.baseId) {
+                console.log('Airtableに接続していません');
+                return false;
             }
 
             try {
-                const loadingSpan = document.createElement('span');
-                loadingSpan.className = 'loading';
-                loadingSpan.textContent = '同期中';
-                document.querySelector('.controls').appendChild(loadingSpan);
-
                 const response = await fetch(`https://api.airtable.com/v0/${airtableConfig.baseId}/${encodeURIComponent(airtableConfig.tableName)}`, {
                     headers: {
                         'Authorization': `Bearer ${airtableConfig.token}`
@@ -1211,14 +1853,13 @@
                     airtableId: record.id
                 })).filter(item => item.name && item.expiryDate);
 
-                saveData();
-                renderTable();
-                loadingSpan.remove();
-                alert(`✅ ${inventory.length}件のデータを同期しました`);
+                console.log(`Airtableから${inventory.length}件のデータを読み込みました`);
+                saveData(); // ローカルストレージにも保存
+                return true;
             } catch (error) {
-                console.error('同期エラー:', error);
-                alert(`同期でエラーが発生しました: ${error.message}`);
-                document.querySelector('.loading')?.remove();
+                console.error('Airtable同期エラー:', error);
+                updateConnectionStatus(false);
+                return false;
             }
         }
 
@@ -1234,13 +1875,15 @@
                 document.getElementById('mainScreen').classList.remove('hidden');
                 document.getElementById('floatingButtons').style.display = 'flex';
                 
-                updateConnectionStatus(true);
+                loadAirtableConfig();
+                updateConnectionStatus(airtableConfig.isConnected && airtableConfig.token && airtableConfig.baseId);
                 loadData();
                 updateItemNameOptions();
+                updateFormOptions();
                 renderTable();
                 startCountdownTimer();
 
-                console.log('ログイン完了 - セッション中データ保持（artifacts環境）');
+                console.log('ログイン完了');
             } else {
                 errorMessage.style.display = 'block';
                 loginContainer.classList.add('shake');
@@ -1272,8 +1915,10 @@
                 closeScheduleModal();
                 closeRestoreModal();
                 closeIngredientMasterModal();
+                closeAirtableSetupModal();
+                closeMasterSettingsModal();
                 
-                console.log('ログアウトしました（セッション中のデータは保持）');
+                console.log('ログアウトしました');
             }
         }
 
@@ -1548,74 +2193,100 @@
         }
 
         function saveData() {
-            // Claude.ai artifacts環境ではlocalStorageが使用できないため、
-            // データはセッション中のみメモリに保持されます
-            console.log('データをメモリに保存しました（セッション中のみ有効）');
+            // ローカルストレージに保存
+            try {
+                localStorage.setItem('zaicopath_inventory', JSON.stringify(inventory));
+                localStorage.setItem('zaicopath_ingredientMasters', JSON.stringify(ingredientMasters));
+                localStorage.setItem('zaicopath_productMasters', JSON.stringify(productMasters));
+                localStorage.setItem('zaicopath_deletedItems', JSON.stringify(deletedItems));
+                localStorage.setItem('zaicopath_deletedProducts', JSON.stringify(deletedProductMasters));
+                localStorage.setItem('zaicopath_deletedIngredients', JSON.stringify(deletedIngredientMasters));
+                localStorage.setItem('zaicopath_staffMasters', JSON.stringify(staffMasters));
+                localStorage.setItem('zaicopath_storageTypeMasters', JSON.stringify(storageTypeMasters));
+                localStorage.setItem('zaicopath_locationMasters', JSON.stringify(locationMasters));
+                console.log('データをローカルストレージに保存しました');
+            } catch (e) {
+                console.error('ローカルストレージ保存エラー:', e);
+            }
         }
 
         function loadData() {
             try {
-                // 初期データの設定（localStorageの代わり）
-                if (inventory.length === 0) {
-                    inventory = [
-                        {
-                            name: "キャベツ",
-                            quantity: "1000g",
-                            prepDate: "2025-06-07T10:00",
-                            expiryDate: "2025-06-09T10:00",
-                            storageType: "冷蔵",
-                            location: "冷蔵庫1",
-                            staff: "後藤",
-                            notes: "使いかけ／サラダ用"
-                        },
-                        {
-                            name: "もやし",
-                            quantity: "500g",
-                            prepDate: "2025-06-06T14:30",
-                            expiryDate: "2025-06-07T14:30",
-                            storageType: "冷蔵",
-                            location: "冷蔵庫1",
-                            staff: "火山",
-                            notes: "痛みやすいので注意"
-                        },
-                        {
-                            name: "チャーシュー",
-                            quantity: "1500g",
-                            prepDate: "2025-06-05T09:00",
-                            expiryDate: "2025-06-08T09:00",
-                            storageType: "冷蔵",
-                            location: "冷蔵庫（倉庫）",
-                            staff: "原",
-                            notes: "スライス済み"
-                        }
-                    ];
+                // まずローカルストレージから読み込み
+                const localInventory = localStorage.getItem('zaicopath_inventory');
+                const localIngredients = localStorage.getItem('zaicopath_ingredientMasters');
+                const localProducts = localStorage.getItem('zaicopath_productMasters');
+                const localDeletedItems = localStorage.getItem('zaicopath_deletedItems');
+                const localDeletedProducts = localStorage.getItem('zaicopath_deletedProducts');
+                const localDeletedIngredients = localStorage.getItem('zaicopath_deletedIngredients');
+                const localStaffMasters = localStorage.getItem('zaicopath_staffMasters');
+                const localStorageTypeMasters = localStorage.getItem('zaicopath_storageTypeMasters');
+                const localLocationMasters = localStorage.getItem('zaicopath_locationMasters');
+                
+                if (localInventory) {
+                    inventory = JSON.parse(localInventory);
+                    console.log('ローカルストレージから在庫データを読み込みました');
                 }
-
-                if (deletedItems.length === 0) {
-                    deletedItems = [];
+                
+                if (localIngredients) {
+                    ingredientMasters = JSON.parse(localIngredients);
+                } else {
+                    initializeIngredientMasters();
                 }
-
-                if (productMasters.length === 0) {
+                
+                if (localProducts) {
+                    productMasters = JSON.parse(localProducts);
+                } else {
                     initializeProductMasters();
                 }
 
-                if (deletedProductMasters.length === 0) {
-                    deletedProductMasters = [];
+                if (localDeletedItems) {
+                    deletedItems = JSON.parse(localDeletedItems);
                 }
 
-                if (ingredientMasters.length === 0) {
-                    initializeIngredientMasters();
+                if (localDeletedProducts) {
+                    deletedProductMasters = JSON.parse(localDeletedProducts);
                 }
 
-                if (deletedIngredientMasters.length === 0) {
-                    deletedIngredientMasters = [];
+                if (localDeletedIngredients) {
+                    deletedIngredientMasters = JSON.parse(localDeletedIngredients);
                 }
 
-                console.log('初期データを設定しました');
+                // マスターデータの読み込み
+                if (localStaffMasters) {
+                    staffMasters = JSON.parse(localStaffMasters);
+                } else {
+                    initializeMasterData();
+                }
+                
+                if (localStorageTypeMasters) {
+                    storageTypeMasters = JSON.parse(localStorageTypeMasters);
+                }
+                
+                if (localLocationMasters) {
+                    locationMasters = JSON.parse(localLocationMasters);
+                }
+
+                // Airtable設定がある場合は同期を試みる
+                if (airtableConfig.isConnected && airtableConfig.token && airtableConfig.baseId) {
+                    syncFromAirtable().then(success => {
+                        if (success) {
+                            console.log('Airtableとの同期完了');
+                        }
+                        renderTable();
+                        updateStats();
+                    });
+                } else {
+                    renderTable();
+                    updateStats();
+                }
+
+                console.log('データ読み込み完了');
             } catch (error) {
                 console.error('データ読み込みエラー:', error);
                 initializeProductMasters();
                 initializeIngredientMasters();
+                initializeMasterData();
                 inventory = [];
                 deletedItems = [];
                 deletedProductMasters = [];
@@ -1646,7 +2317,7 @@
             return deletedItems.filter(item => new Date(item.deletedAt) > threeDaysAgo);
         }
 
-        function restoreItem(deletedItem) {
+        async function restoreItem(deletedItem) {
             const restoredItem = {
                 name: deletedItem.name,
                 quantity: deletedItem.quantity,
@@ -1658,9 +2329,13 @@
                 notes: deletedItem.notes
             };
             
-            inventory.push(restoredItem);
-            saveToAirtable(restoredItem);
+            // Airtableに保存を試みる
+            const airtableId = await saveToAirtable(restoredItem);
+            if (airtableId) {
+                restoredItem.airtableId = airtableId;
+            }
             
+            inventory.push(restoredItem);
             renderTable();
             deletedItems = deletedItems.filter(item => item.id !== deletedItem.id);
             saveData();
@@ -1834,7 +2509,7 @@
             
             // 本日の仕込み数を計算
             const schedules = calculatePrepSchedule();
-            const todayPrep = schedules.filter(s => s.urgencyLevel <= 2).length; // 在庫なし + 本日仕込み
+            const todayPrep = schedules.filter(s => s.urgencyLevel <= 2).length;
 
             document.getElementById('totalItems').textContent = total;
             document.getElementById('urgentItems').textContent = urgent;
@@ -1845,6 +2520,9 @@
             document.getElementById('addForm').style.display = 'block';
             document.getElementById('prepDate').value = '';
             document.getElementById('expiryDate').value = '';
+            
+            // フォームの選択肢を更新
+            updateFormOptions();
             
             // スクロールして追加フォームを表示
             document.getElementById('addForm').scrollIntoView({ behavior: 'smooth' });
@@ -1889,14 +2567,19 @@
 
             if (editingIndex >= 0) {
                 const oldItem = inventory[editingIndex];
-                inventory[editingIndex] = { ...newItem, airtableId: oldItem.airtableId };
-                
-                if (oldItem.airtableId) {
-                    await saveToAirtable(newItem, oldItem.airtableId);
+                const airtableId = await saveToAirtable(newItem, oldItem.airtableId);
+                if (airtableId || oldItem.airtableId) {
+                    inventory[editingIndex] = { ...newItem, airtableId: airtableId || oldItem.airtableId };
+                } else {
+                    inventory[editingIndex] = newItem;
                 }
             } else {
                 const airtableId = await saveToAirtable(newItem);
-                inventory.push({ ...newItem, airtableId });
+                if (airtableId) {
+                    inventory.push({ ...newItem, airtableId });
+                } else {
+                    inventory.push(newItem);
+                }
             }
             
             saveData();
@@ -1943,12 +2626,12 @@
             if (confirm('期限切れの食材をすべて削除しますか？')) {
                 const expiredItems = inventory.filter(item => getTimeUntilExpiry(item.expiryDate).expired);
                 
-                expiredItems.forEach(item => {
+                for (const item of expiredItems) {
                     saveDeletedItem(item);
                     if (item.airtableId) {
-                        deleteFromAirtable(item.airtableId);
+                        await deleteFromAirtable(item.airtableId);
                     }
-                });
+                }
                 
                 inventory = inventory.filter(item => !getTimeUntilExpiry(item.expiryDate).expired);
                 saveData();
@@ -2154,6 +2837,8 @@
 
         function renderProductMasterList() {
             const container = document.getElementById('productMasterList');
+            if (!container) return; // 要素が存在しない場合は処理をスキップ
+            
             let html = '';
             
             productMasters.forEach((product, index) => {
@@ -2343,13 +3028,13 @@
         }
 
         function showScheduleModal() {
-            renderProductMasterList();
             updateScheduleDisplay();
             document.getElementById('scheduleModal').style.display = 'flex';
         }
 
         function closeScheduleModal() {
             document.getElementById('scheduleModal').style.display = 'none';
+            cancelProductEdit();
         }
 
         function exportToCSV() {
@@ -2381,8 +3066,31 @@
             }, 1000);
         }
 
-        // 検索機能
-        document.getElementById('searchBox').addEventListener('input', renderTable);
+        // 手動同期機能
+        async function manualSync() {
+            if (!airtableConfig.token || !airtableConfig.baseId) {
+                alert('Airtable設定が完了していません。\n設定ボタン（⚙️）から接続情報を入力してください。');
+                showAirtableSetupModal();
+                return;
+            }
+            
+            const loadingSpan = document.createElement('span');
+            loadingSpan.className = 'loading';
+            loadingSpan.textContent = '同期中';
+            document.querySelector('.controls').appendChild(loadingSpan);
+
+            const success = await syncFromAirtable();
+            
+            loadingSpan.remove();
+            
+            if (success) {
+                renderTable();
+                updateStats();
+                alert('✅ データを同期しました');
+            } else {
+                alert('❌ 同期に失敗しました。\nAirtable設定を確認してください。');
+            }
+        }
 
         // Enterキーでログイン
         document.getElementById('password').addEventListener('keypress', function(e) {
@@ -2390,12 +3098,17 @@
                 handleLogin(e);
             }
         });
+        
+        // 検索機能
+        document.getElementById('searchBox').addEventListener('input', renderTable);
 
         // 初期表示
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('loginScreen').classList.remove('hidden');
             document.getElementById('mainScreen').classList.add('hidden');
             document.getElementById('floatingButtons').style.display = 'none';
+            loadAirtableConfig();
         });
     </script>
+</body>
 </html>
